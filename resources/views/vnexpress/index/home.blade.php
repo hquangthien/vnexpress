@@ -309,16 +309,37 @@
                         @endforeach
                         <br /><br />
                     @endif
-                    {{--<div class="business_category_left wow fadeInDown">
-                        <ul class="fashion_catgnav">
-                            <li>
-                                <div class="catgimg2_container"> <a href="pages/single.html"><img alt="" src="{{ $publicUrl }}images/390x240x1.jpg"></a> </div>
-                                <h2 class="catg_titile"><a href="pages/single.html">Aenean mollis metus sit amet ligula adipiscing</a></h2>
-                                <div class="comments_box"> <span class="meta_date">14/12/2045</span> <span class="meta_comment"><a href="#">No Comments</a></span> <span class="meta_more"><a  href="#">Read More...</a></span> </div>
-                                <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla...</p>
-                            </li>
-                        </ul>
-                    </div>--}}
+                    @foreach($newsInRemainCat as $key => $itemNewsInRemainCat)
+                        <?php
+                        $url = route('vnexpress.page.detail', ['slug' => str_slug($itemNewsInRemainCat->title), 'id' => $itemNewsInRemainCat->id]);
+                        $countComments = $modelNews->countCommentOfNews($itemNewsInRemainCat->id)[0]->count_cmt;
+                        ?>
+                        <div class="business_category_left wow fadeInDown">
+                            <ul class="fashion_catgnav">
+                                <li>
+                                    <div class="catgimg2_container">
+                                        <a href="{{ $url }}">
+                                            <img src="{{ Storage::url('app/files/') }}{{ $itemNewsInRemainCat->picture }}" alt="{{str_slug($itemNewsInRemainCat->title)}}">
+                                        </a>
+                                    </div>
+                                    <h2 class="catg_titile">
+                                        <a href="{{ $url }}">{{ $itemNewsInRemainCat->title }}</a>
+                                    </h2>
+                                    <div class="comments_box">
+                                        <span class="meta_date">14/12/2045</span>
+                                        <span class="meta_comment">
+                                            <a href="#">
+                                                {{ $countComments = ($countComments==0)?"Chưa có":$countComments }} bình luận
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <p>{!! str_limit($itemNewsInRemainCat->preview, 90) !!} <span class="meta_more"><a  href="{{ route('vnexpress.page.detail', ['slug' => str_slug($itemNewsInRemainCat->title), 'id' => $itemNewsInRemainCat->id]) }}">Đọc tiếp...</a></span></p>
+                                </li>
+                            </ul>
+                        </div>
+                        @unset($newsInRemainCat[$key])
+                    @break
+                    @endforeach
                     <div class="business_category_right wow fadeInDown">
                         <ul class="small_catg">
                             @foreach($newsInRemainCat as $itemNewsInRemainCat)
