@@ -309,11 +309,7 @@
                         @endforeach
                         <br /><br />
                     @endif
-                    <div class="business_category_left wow fadeInDown">
-                        <?php
-                            $test = $newsInRemainCat[0];
-
-                        ?>
+                    {{--<div class="business_category_left wow fadeInDown">
                         <ul class="fashion_catgnav">
                             <li>
                                 <div class="catgimg2_container"> <a href="pages/single.html"><img alt="" src="{{ $publicUrl }}images/390x240x1.jpg"></a> </div>
@@ -322,33 +318,32 @@
                                 <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla...</p>
                             </li>
                         </ul>
-                    </div>
+                    </div>--}}
                     <div class="business_category_right wow fadeInDown">
                         <ul class="small_catg">
-                            <li>
-                                <div class="media wow fadeInDown"> <a class="media-left" href="pages/single.html"><img src="{{ $publicUrl }}images/112x112.jpg" alt=""></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading"><a href="pages/single.html">Duis condimentum nunc pretium lobortis </a></h4>
-                                        <div class="comments_box"> <span class="meta_date">14/12/2045</span> <span class="meta_comment"><a href="#">No Comments</a></span> </div>
+                            @foreach($newsInRemainCat as $itemNewsInRemainCat)
+                                <?php
+                                    $url = route('vnexpress.page.detail', ['slug' => str_slug($itemNewsInRemainCat->title), 'id' => $itemNewsInRemainCat->id]);
+                                    $countComments = $modelNews->countCommentOfNews($itemNewsInRemainCat->id)[0]->count_cmt;
+                                ?>
+                                <li>
+                                    <div class="media wow fadeInDown">
+                                        <a class="media-left" href="{{ $url }}">
+                                            <img src="{{ Storage::url('app/files/') }}{{ $itemNewsInRemainCat->picture }}" alt="{{str_slug($itemNewsInRemainCat->title)}}">
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading"><a href="{{ $url }}">{!! $itemNewsInRemainCat->title !!} </a></h4>
+                                            <div class="comments_box">
+                                                <span class="meta_date">{{ $itemNewsInRemainCat->created_at }}</span>
+                                                <span class="meta_comment">
+                                                    <a href="{{ $url }}">
+                                                        {{ $countComments = ($countComments==0)?"Chưa có":$countComments }} bình luận
+                                                    </a></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="media wow fadeInDown"> <a class="media-left" href="#"><img src="{{ $publicUrl }}images/112x112.jpg" alt=""></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading"><a href="#">Duis condimentum nunc pretium lobortis </a></h4>
-                                        <div class="comments_box"> <span class="meta_date">14/12/2045</span> <span class="meta_comment"><a href="#">No Comments</a></span> </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="media wow fadeInDown"> <a class="media-left" href="#"><img src="{{ $publicUrl }}images/112x112.jpg" alt=""></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading"><a href="#">Duis condimentum nunc pretium lobortis </a></h4>
-                                        <div class="comments_box"> <span class="meta_date">14/12/2045</span> <span class="meta_comment"><a href="#">No Comments</a></span> </div>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

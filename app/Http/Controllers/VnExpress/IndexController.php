@@ -41,7 +41,7 @@ class IndexController extends Controller
                 $arNewsInRemainCat[$remainCat->id.'-'.$remainCat->name] = $this->news->getNewsOfSuperCat($remainCat->id, 4);
             }
         }
-        //dd($arNewsInRemainCat);
+        //dd($objNewsPopular);
         //get 10 news are pinned
         $objPinNews = $this->news->getPinNews();
 
