@@ -240,7 +240,7 @@ class Response extends AbstractMessage implements \Serializable
     /**
      * Get a cURL transfer information
      *
-     * @param string $key A single statistic to check
+     * @param string $key A single index to check
      *
      * @return array|string|null Returns all stats if no key is set, a single stat if a key is set, or null if a key
      *                           is set and not found

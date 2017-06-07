@@ -39,7 +39,7 @@
                     </div>
                     <div class="header_top_right">
                         <form action="#" class="search_form">
-                            <input type="text" placeholder="Text to Search">
+                            <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
                             <input type="submit" value="">
                         </form>
                     </div>

@@ -91,6 +91,7 @@
 <script src="{{ $adminUrl }}assets/js/waves.js"></script>
 <script src="{{ $adminUrl }}assets/js/jquery.nicescroll.js"></script>
 <script src="{{ $adminUrl }}assets/js/jquery.scrollTo.min.js"></script>
+<script src="{{ $adminUrl }}assets/js/function_custom.js"></script>
 @yield('js')
 <!-- App js -->
 <script src="{{ $adminUrl }}assets/js/jquery.core.js"></script>

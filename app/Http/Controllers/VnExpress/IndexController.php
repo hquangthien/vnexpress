@@ -38,13 +38,17 @@ class IndexController extends Controller
             if (in_array($remainCat->id, $arIdPopularCat)){
                 unset($arRemainCat[$key]);
             } else{
-                $arNewsInRemainCat[$remainCat->id.'-'.$remainCat->name] = $this->news->getNewsOfSuperCat($remainCat->id, 4);
+                $tmp = $this->news->getNewsOfSuperCat($remainCat->id, 4);
+                if (sizeof($tmp) > 0){
+                    $arNewsInRemainCat[$remainCat->id.'-'.$remainCat->name] = $tmp;
+                }
             }
         }
-        //dd($objNewsPopular);
+
         //get 10 news are pinned
         $objPinNews = $this->news->getPinNews();
 
+        //get favourite news
 
         return view('vnexpress.index.home', [
                 'objPinNews' => $objPinNews,

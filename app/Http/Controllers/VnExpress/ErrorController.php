@@ -7,8 +7,17 @@ use App\Http\Controllers\Controller;
 
 class ErrorController extends Controller
 {
-    public function error()
+    public function error($status)
     {
-        return view('vnexpress.error');
+        switch ($status){
+            case '404':
+                return view('vnexpress.error.error404');
+                break;
+            case '505':
+                return view('vnexpress.error.error505');
+                break;
+        }
+
+
     }
 }
