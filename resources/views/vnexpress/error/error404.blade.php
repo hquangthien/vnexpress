@@ -4,9 +4,9 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="error_page_content">
                 <h1>404</h1>
-                <h2>Sorry :(</h2>
-                <h3>This page doesn't exist.</h3>
-                <p class="wow fadeInLeftBig">Please, continue to our <a href="../index.html">Home page</a></p>
+                <h2>Xin lỗi :(</h2>
+                <h3>Thư mục bạn tìm kiếm không tồn tại.</h3>
+                <p class="wow fadeInLeftBig">Vui lòng di chuyển đến <a href="{{ route('vnexpress.page.home') }}">Trang chủ</a></p>
             </div>
         </div>
     </div>

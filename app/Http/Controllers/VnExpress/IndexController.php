@@ -48,6 +48,7 @@ class IndexController extends Controller
         //get 10 news are pinned
         $objPinNews = $this->news->getPinNews();
 
+        //get favourite news
 
         return view('vnexpress.index.home', [
                 'objPinNews' => $objPinNews,

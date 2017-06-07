@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
             {
                 // not found
                 case 404:
-                    return redirect()->route('vnexpress.page.error');
+                    return redirect()->route('vnexpress.page.error', ['status' => '404']);
                     break;
 
                 // internal error

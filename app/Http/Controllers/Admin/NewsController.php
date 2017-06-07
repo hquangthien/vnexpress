@@ -2,84 +2,117 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\NewsRequest;
+use App\Model\Cat;
+use App\Model\News;
 use App\Http\Controllers\Controller;
+use App\Model\News_Tag;
+use App\Model\Tag;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var News
      */
-    public function index()
+    private $newsModel;
+
+    public function __construct(News $newsModel)
     {
-        return view('admin.news.index');
+        $this->newsModel = $newsModel;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        $objNews = $this->newsModel->getAllNewsToShow();
+        return view('admin.news.index', ['objNews' => $objNews]);
+    }
+
     public function create()
     {
         return view('admin.news.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        try {
+            if ($request->cat_id == '') {
+                $cat_id = $request->cat_parrent;
+            } else {
+                $cat_id = $request->cat_id;
+            }
+            $picture = $request->file('picture')->store('/files');
+            $picture = last(explode('/', $picture));
+            //Insert News
+            $objNews = new $this->newsModel();
+            $objNews->title = $request->title;
+            $objNews->preview = $request->preview;
+            $objNews->detail = $request->detail;
+            $objNews->cat_id = $cat_id;
+            $objNews->picture = $picture;
+            $objNews->created_by = Auth::user()->id;
+
+            $objNews->save();
+            $lastIdNews = $objNews->id;
+            // Insert Tags
+            $tagsModel = new Tag();
+            $newsTagsModel = new News_Tag();
+
+            $dataNewsTags = [];
+            if ($request->tags != '') {
+                $arTags = explode(',', $request->tags);
+                foreach ($arTags as $tagItem) {
+                    $objTags = $tagsModel->checkTag(trim($tagItem));
+                    if (sizeof($objTags) == 0) {
+                        $lastId = $tagsModel->insertGetId(trim($tagItem));
+                        $tmp = ['news_id' => $lastIdNews, 'tag_id' => $lastId];
+                        array_push($dataNewsTags, $tmp);
+                    } else {
+                        $tmp = ['news_id' => $lastIdNews, 'tag_id' => $objTags[0]->id];
+                        array_push($dataNewsTags, $tmp);
+                    }
+                }
+            }
+            $newsTagsModel->insertTags($dataNewsTags);
+            return redirect()->route('news.index')->with('msg', 'Thêm thành công');
+        } catch (\Exception $exception){
+            return redirect()->route('news.index')->with('msg', 'Có lỗi xảy ra khi thêm tin');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
+
         return view('admin.news.edit');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $objAdv = $this->newsModel->find($id);
+        Storage::delete('files/'.$objAdv->picture);
+        if ($objAdv->delete()){
+            return redirect()->route('news.index')->with('msg', 'Xóa thành công');
+        } else{
+            return redirect()->route('news.index')->with('msg', 'Xóa thất bại');
+        }
+    }
+
+    public function getSubCat($id)
+    {
+        $catModel = new Cat();
+        $objSubCat =$catModel->getSubCat($id)->toJson();
+        return response()->json($objSubCat);
     }
 }

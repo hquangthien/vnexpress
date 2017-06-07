@@ -6,41 +6,49 @@
                 <div class="col-sm-12">
                     <div class="card-box">
 
-                        <h4 class="header-title m-t-0 m-b-30">Input Types</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Sửa danh mục tin</h4>
 
                         <div class="row">
                             <div class="col-lg-12">
-                                <form class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label">Text</label>
-                                        <div class="col-md-10">
-                                            <input type="text" class="form-control" value="Some text value...">
-                                        </div>
+                                <?php if(count($errors) > 0): ?>
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li><?php echo e($error); ?></li>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </ul>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label" for="example-email">Email</label>
-                                        <div class="col-md-10">
-                                            <input type="email" id="example-email" name="example-email" class="form-control" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label">Password</label>
-                                        <div class="col-md-10">
-                                            <input type="password" class="form-control" value="password">
-                                        </div>
-                                    </div>
+                                <?php endif; ?>
+                                <?php if(session('msg')): ?>
+                                    <p class="alert alert-warning"><?php echo e(session('msg')); ?></p>
+                                <?php endif; ?>
+                                <form class="form-horizontal" action="<?php echo e(route('cat.update', ['id' => $objCat->id ])); ?>" role="form" method="POST">
+                                    <?php echo e(csrf_field()); ?>
 
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Placeholder</label>
+                                        <label class="col-md-2 control-label">Tên danh mục tin (*)</label>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control" placeholder="placeholder">
+                                            <input type="text" name="name" class="form-control" value="<?php echo e($objCat->name); ?>" placeholder="Nhập danh mục tin...">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Text area</label>
+                                        <label class="col-md-2 control-label">Danh mục cha</label>
                                         <div class="col-md-10">
-                                            <textarea class="form-control" id="editor" rows="5"></textarea>
+                                            <select class="form-control" name="parrent_cat">
+                                                <option value="<?php echo e(null); ?>">-- Không có --</option>
+                                                <?php $__currentLoopData = $objSuperCat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $superCat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php if($superCat->id == $objCat->parrent_cat): ?>
+                                                        <option value="<?php echo e($superCat->id); ?>" selected><?php echo e($superCat->name); ?></option>
+                                                    <?php else: ?>
+                                                        <option value="<?php echo e($superCat->id); ?>"><?php echo e($superCat->name); ?></option>
+                                                    <?php endif; ?>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
                                         </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <input type="submit" name="submit" value="Cập nhật" class="btn btn-lg btn-primary">
+                                        <input type="reset" name="reset" value="Nhập lại" class="btn btn-lg btn-default">
                                     </div>
                                 </form>
                             </div><!-- end col -->
@@ -53,21 +61,6 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('js'); ?>
-    <script src="/public/plugins/ckeditor/ckeditor.js" language="javascript" type="text/javascript"></script>
-    <script src="/public/plugins/ckfinder/ckfinder.js" language="javascript" type="text/javascript"></script>
-    <script type="text/javascript">
-        CKEDITOR.replace('editor', {
-            filebrowserBrowseUrl : '/public/plugins/ckfinder/ckfinder.html',
-            filebrowserImageBrowseUrl : '/public/plugins/ckfinder/ckfinder.html?type=Images',
-            filebrowserFlashBrowseUrl : '/public/plugins/ckfinder/ckfinder.html?type=Flash',
-            filebrowserUploadUrl : '/public/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-            filebrowserImageUploadUrl : '/public/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-            filebrowserFlashUploadUrl : '/public/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash',
-            height  : '500px',
-        });
-    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('templates.admin.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

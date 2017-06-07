@@ -6,18 +6,12 @@
         <div class="user-box">
             <div class="user-img">
                 <img src="{{ $adminUrl }}assets/images/users/avatar-1.jpg" alt="user-img" title="Mat Helme" class="img-circle img-thumbnail img-responsive">
-                <div class="user-status offline"><i class="zmdi zmdi-dot-circle"></i></div>
+                <div class="user-status online"><i class="zmdi zmdi-dot-circle"></i></div>
             </div>
-            <h5><a href="#">Mat Helme</a> </h5>
+            <h5><a href="javascript:void(0)">{{ Auth::user()->fullname }}</a> </h5>
             <ul class="list-inline">
                 <li>
-                    <a href="#" >
-                        <i class="zmdi zmdi-settings"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="text-custom">
+                    <a href="{{ route('logout') }}" class="text-custom">
                         <i class="zmdi zmdi-power"></i>
                     </a>
                 </li>
@@ -28,10 +22,10 @@
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <ul>
-                <li class="text-muted menu-title">Navigation</li>
+                <li class="text-muted menu-title">Bảng điều khiển</li>
 
                 <li>
-                    <a href="{{ route('statistic.index') }}" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> Thống kê </span> </a>
+                    <a href="{{ route('index.index') }}" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> Thống kê </span> </a>
                 </li>
 
                 <li>

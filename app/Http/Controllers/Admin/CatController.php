@@ -2,84 +2,89 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CatRequest;
+use App\Model\Cat;
 use App\Http\Controllers\Controller;
 
 class CatController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var Cat
      */
+    private $catModel;
+
+    public function __construct(Cat $catModel)
+    {
+        $this->catModel = $catModel;
+    }
+
     public function index()
     {
         return view('admin.cat.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('admin.cat.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CatRequest $request)
     {
-        //
+        $this->catModel->parrent_cat = $request->parrent_cat;
+        $this->catModel->name = $request->name;
+        if ($this->catModel->save()){
+            return redirect()->route('cat.index')->with('msg', 'Thêm danh mục tin thành công');
+        } else{
+            return redirect()->route('cat.index')->with('msg', 'Thêm danh mục tin thất bại');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        return view('admin.cat.edit');
+        $objCat = $this->catModel->find($id);
+        return view('admin.cat.edit', ['objCat' => $objCat]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(CatRequest $request, $id)
     {
-        //
+        $objCat = $this->catModel->find($id);
+        $objCat->name = $request->name;
+        if ($request->parrent_cat != null){
+            if ($objCat->parrent_cat == null){
+                return redirect()->route('cat.edit', ['id' => $id])->with('msg', 'Bạn không thể đặt danh mục cha vào trong một danh mục khác');
+            } else{
+                $objCat->parrent_cat = $request->parrent_cat;
+            }
+        }
+        if ($objCat->save()){
+            return redirect()->route('cat.index')->with('msg', 'Cập nhật danh mục tin thành công');
+        } else{
+            return redirect()->route('cat.index')->with('msg', 'Cập nhật danh mục tin thất bại');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $objCat = $this->catModel->find($id);
+        if ($objCat->parrent_cat == null)
+        {
+            try{
+                $this->catModel->deleteSubCat($id);
+                $this->catModel->destroy($id);
+                return redirect()->route('cat.index')->with('msg', 'Xóa danh mục tin thành công');
+            } catch (\Exception $exception)
+            {
+                return redirect()->route('cat.index')->with('msg', 'Có lỗi khi xóa danh mục tin');
+            }
+
+        } else{
+            if ($this->catModel->destroy($id)){
+                return redirect()->route('cat.index')->with('msg', 'Xóa danh mục tin thành công');
+            } else{
+                return redirect()->route('cat.index')->with('msg', 'Xóa danh mục tin thất bại');
+            }
+        }
     }
 }

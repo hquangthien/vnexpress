@@ -5,69 +5,64 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-box">
-                        <div class="dropdown pull-right">
-                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
-                                <i class="zmdi zmdi-more-vert"></i>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-
-                        <h4 class="header-title m-t-0 m-b-30">Responsive tables</h4>
-
-                        <p class="text-muted font-13 m-b-25">
-                            Create responsive tables by wrapping any <code>.table</code> in <code>.table-responsive</code>
-                            to make them scroll horizontally on small devices (under 768px).
-                        </p>
-
+                        <h4 class="header-title m-t-0 m-b-30">Danh sách người dùng</h4>
+                        <?php if(session('msg')): ?>
+                            <p class="alert alert-success"> <?php echo e(session('msg')); ?> </p>
+                        <?php endif; ?>
+                        <?php if(Auth::user()->role == 1): ?>
+                            <a href="<?php echo e(route('user.create')); ?>" class="btn btn-primary">Tạo mới</a>
+                        <?php endif; ?>
+                        <br /><br />
                         <div class="table-responsive">
-                            <table class="table m-0">
+                            <table class="table m-0 text-center table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Table heading</th>
-                                    <th>Table heading</th>
-                                    <th>Table heading</th>
-                                    <th>Table heading</th>
-                                    <th>Table heading</th>
-                                    <th>Table heading</th>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Quyền</th>
+                                    <?php if(Auth::user()->role == 1): ?>
+                                        <th>Tình trạng</th>
+                                    <?php endif; ?>
+                                    <th>Chức năng</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <?php $__currentLoopData = $objUser; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $userItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
+                                    <th><?php echo e($userItem->id); ?></th>
+                                    <td><?php echo e($userItem->username); ?></td>
+                                    <td><?php echo e($userItem->fullname); ?></td>
+                                    <td><?php echo e($userItem->email); ?></td>
+                                    <td><?php echo e($userItem->name_role); ?></td>
+                                    <?php if(Auth::user()->role == 1): ?>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="changeActive(<?php echo e($userItem->id); ?>)">
+                                        <?php if($userItem->active_user == 1): ?>
+                                                <img id="user<?php echo e($userItem->id); ?>" src="<?php echo e($adminUrl); ?>assets/images/1.gif">
+                                        <?php else: ?>
+                                            <img id="user<?php echo e($userItem->id); ?>" src="<?php echo e($adminUrl); ?>assets/images/0.gif">
+                                        <?php endif; ?>
+                                        </a>
+                                    </td>
+                                    <?php endif; ?>
+                                    <td class="actions">
+                                        <?php if(Auth::user()->role == 1 OR Auth::user()->id == $userItem->id): ?>
+                                        <a href="<?php echo e(route('user.edit', ['id' => $userItem->id])); ?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||
+                                        <a href="<?php echo e(route('user.destroy', ['id' => $userItem->id])); ?>" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                        <?php else: ?>
+                                            No action
+                                        <?php endif; ?>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="text-center">
+                            <?php echo e($objUser->links()); ?>
+
                         </div>
                     </div>
                 </div><!-- end col -->
@@ -78,6 +73,20 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
+    <script type="text/javascript">
+        function changeActive(id) {
+            updateActive('user/active_user', id,
+                function (data) {
+                    $('#user'+id).attr('src', '<?php echo e($adminUrl); ?>assets/images/'+ data.active +'.gif');
+                },
+                function (error) {
+                    console.log(error);
+                }
+            );
+        }
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('templates.admin.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

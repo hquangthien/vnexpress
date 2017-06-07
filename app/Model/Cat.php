@@ -12,12 +12,20 @@ class Cat extends Model
 
     public $timestamps = false;
 
-    public function getSuperCat()
+    public function getSuperCat($id = null)
     {
-        return DB::table('categories')
-            ->where('parrent_cat', '=', null)
-            ->select('categories.*')
-            ->get();
+        if ($id == null){
+            return DB::table('categories')
+                ->where('parrent_cat', '=', null)
+                ->select('categories.*')
+                ->get();
+        } else{
+            return DB::table('categories')
+                ->where('parrent_cat', '=', null)
+                ->where('id', '=', $id)
+                ->select('categories.*')
+                ->get();
+        }
     }
 
     public function getSubCat($superCatId)
@@ -47,5 +55,29 @@ class Cat extends Model
             ->get();
     }
 
+    public function countNewsOfSuperCat($id){
+        return DB::table('news')
+            ->whereIn('cat_id', function ($query) use ($id) {
+                $query->select('id')->from('categories')
+                    ->where('parrent_cat', '=', $id);
+
+            })
+            ->orWhere('cat_id', '=', $id)
+            ->selectRaw('count(news.id) as number_news')
+            ->get();
+    }
+
+    public function countNewsOfSubCat($id){
+        return DB::table('news')
+            ->where('cat_id', '=', $id)
+            ->selectRaw('count(news.id) as number_news')
+            ->get();
+    }
+
+    public function deleteSubCat($parrent_id){
+        return DB::table('categories')
+            ->where('parrent_cat', '=', $parrent_id)
+            ->delete();
+    }
 
 }

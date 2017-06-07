@@ -2,84 +2,90 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserRequest;
+use App\Model\Role;
+use App\User;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $user;
+
+    public function __construct(User $user)
     {
-        return view('admin.user.index');
+        $this->user = $user;
+        view()->share('objRoles', Role::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        $objUser = $this->user->getAllUser();
+        return view('admin.user.index', ['objUser' => $objUser]);
+    }
+
+
     public function create()
     {
         return view('admin.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(UserRequest $userRequest)
     {
-        //
+        $userRequest['password'] = bcrypt(trim($userRequest['password']));
+        if ($this->user->create($userRequest->toArray()))
+        {
+            return redirect()->route('user.index')->with('msg', 'Thêm người dùng thành công');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        return view('admin.user.edit');
+        $objUser = $this->user->find($id);
+        return view('admin.user.edit', ['objUser' => $objUser]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UserEditRequest $request, $id)
     {
-        //
+        $objUser = $this->user->find($id);
+        if ($request->has('password')){
+            $request['password'] = bcrypt(trim($request->password));
+        }
+        if ($objUser->update($request->toArray())){
+            return redirect()->route('user.index')->with('msg', 'Cập nhật thành công');
+        } else{
+            return redirect()->route('user.index')->with('msg', 'Cập nhật thất bại');
+        }
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+
+    }
+
+    public function updateActive($id)
+    {
+        $objUser = $this->user->find($id);
+        $active = null;
+
+        if ($objUser->active_user == 1)
+        {
+            $objUser->active_user = 0;
+            $active = 0;
+        } else{
+            $objUser->active_user = 1;
+            $active = 1;
+        }
+        $objUser->save();
+        return response()->json([
+            'message'=>'Update thành công !',
+            'active' => $active
+        ]);
     }
 }

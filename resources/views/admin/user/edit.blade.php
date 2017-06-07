@@ -7,41 +7,87 @@
                 <div class="col-sm-12">
                     <div class="card-box">
 
-                        <h4 class="header-title m-t-0 m-b-30">Input Types</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Cập nhật thông tin người dùng</h4>
 
                         <div class="row">
                             <div class="col-lg-12">
-                                <form class="form-horizontal" role="form">
+                                @if (count($errors) > 0)
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <form class="form-horizontal" action="{{ route('user.update', ['id' => $objUser->id]) }}" role="form" method="POST">
+                                    {{ csrf_field() }}
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Text</label>
+                                        <label class="col-md-2 control-label">Tên tài khoản (*)</label>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control" value="Some text value...">
+                                            <input type="text" disabled readonly name="username" class="form-control" value="{{ $objUser->username }}" placeholder="Nhập tài khoản...">
                                         </div>
                                     </div>
+                                    @if(Auth::user()->role == 1)
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label" for="example-email">Email</label>
+                                        <label class="col-md-2 control-label">Quyền (*)</label>
                                         <div class="col-md-10">
-                                            <input type="email" id="example-email" name="example-email" class="form-control" placeholder="Email">
+                                            <select class="form-control" name="role">
+                                                @foreach($objRoles as $roleItem)
+                                                    @if($roleItem->id == $objUser->role)
+                                                        <option value="{{ $roleItem->id }}" selected>{{ $roleItem->name }}</option>
+                                                    @else
+                                                        <option value="{{ $roleItem->id }}">{{ $roleItem->name }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
+                                    @endif
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Password</label>
+                                        <label class="col-md-2 control-label" for="example-email">Email (*)</label>
                                         <div class="col-md-10">
-                                            <input type="password" class="form-control" value="password">
+                                            <input type="email" name="email" class="form-control" value="{{ $objUser->email }}" placeholder="Nhập email...">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Placeholder</label>
+                                        <label class="col-md-2 control-label" for="example-email">Nhập lại email (*)</label>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control" placeholder="placeholder">
+                                            <input type="email" name="confirm-email" value="{{ $objUser->email }}" class="form-control" placeholder="Nhập lại email...">
                                         </div>
                                     </div>
+
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Text area</label>
+                                        <label class="col-md-2 control-label" for="example-email">Nhập họ tên (*)</label>
                                         <div class="col-md-10">
-                                            <textarea class="form-control" id="editor" rows="5"></textarea>
+                                            <input type="text" name="fullname" value="{{ $objUser->fullname }}" class="form-control" placeholder="Nhập họ tên...">
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="example-email">Bạn có muốn thay đổi mật khẩu không?</label>
+                                        <div class="col-md-10">
+                                            <input type="checkbox" value="off" id="check" name="check">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Mật khẩu (*)</label>
+                                        <div class="col-md-10">
+                                            <input type="password" disabled="" class="form-control" id="password" name="password" value="" placeholder="Nhập mật khẩu...">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Nhập lại mật khẩu (*)</label>
+                                        <div class="col-md-10">
+                                            <input type="password" disabled="false" id="confirm_password" class="form-control" name="confirm-password" value="" placeholder="Nhập lại mật khẩu...">
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <input type="submit" name="submit" value="Cập nhật" class="btn btn-lg btn-primary">
+                                        <input type="reset" name="reset" value="Nhập lại" class="btn btn-lg btn-default">
                                     </div>
                                 </form>
                             </div><!-- end col -->
@@ -56,17 +102,21 @@
     </div> <!-- content -->
 @endsection
 @section('js')
-    <script src="/public/plugins/ckeditor/ckeditor.js" language="javascript" type="text/javascript"></script>
-    <script src="/public/plugins/ckfinder/ckfinder.js" language="javascript" type="text/javascript"></script>
     <script type="text/javascript">
-        CKEDITOR.replace('editor', {
-            filebrowserBrowseUrl : '/public/plugins/ckfinder/ckfinder.html',
-            filebrowserImageBrowseUrl : '/public/plugins/ckfinder/ckfinder.html?type=Images',
-            filebrowserFlashBrowseUrl : '/public/plugins/ckfinder/ckfinder.html?type=Flash',
-            filebrowserUploadUrl : '/public/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-            filebrowserImageUploadUrl : '/public/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-            filebrowserFlashUploadUrl : '/public/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash',
-            height  : '500px',
+        $(document).ready(function () {
+            $(document).on('change', '#check', function () {
+                if(this.checked){
+                    $('#confirm_password').prop('disabled', false);
+                    $('#password').attr('disabled', false);
+                    $('#check').val('on');
+
+                } else{
+                    $('#confirm_password').prop('disabled', true);
+                    $('#password').attr('disabled', true);
+                    $('#check').val('off');
+                }
+            });
         });
     </script>
 @endsection
+

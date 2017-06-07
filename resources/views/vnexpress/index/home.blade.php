@@ -5,6 +5,11 @@
     ?>
     <div class="content_top">
         <div class="row">
+            <div class="row" style="padding-left: 50px">
+                <h2 style="font-size: 15px; color: #7a8992">
+                    <strong>{{ mb_strtoupper('Hôm nay xem gì?') }}</strong>
+                </h2>
+            </div>
             <div class="col-lg-6 col-md-6 col-sm6">
                 <div class="latest_slider">
                     <div class="slick_slider">
@@ -326,7 +331,7 @@
                                         <a href="{{ $url }}">{{ $itemNewsInRemainCat->title }}</a>
                                     </h2>
                                     <div class="comments_box">
-                                        <span class="meta_date">14/12/2045</span>
+                                        <span class="meta_date">{{ $itemNewsInRemainCat->created_at }}</span>
                                         <span class="meta_comment">
                                             <a href="#">
                                                 {{ $countComments = ($countComments==0)?"Chưa có":$countComments }} bình luận

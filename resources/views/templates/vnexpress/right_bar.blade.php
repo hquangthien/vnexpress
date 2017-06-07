@@ -16,7 +16,7 @@
                                         {{ $recentNews->title }}
                                     </a>
                                 </h4>
-                                <p>{!! str_limit($recentNews->preview, 100) !!} </p>
+                                <p style="font-weight: lighter;">{!! str_limit($recentNews->preview, 100) !!} </p>
                             </div>
                         </div>
                     </li>
@@ -44,7 +44,7 @@
                                                 {{ $popularNews->title }}
                                             </a>
                                         </h4>
-                                        <p>{!! str_limit($popularNews->preview, 100) !!} </p>
+                                        <p style="font-weight: lighter;">{!! str_limit($popularNews->preview, 100) !!} </p>
                                     </div>
                                 </div>
                             </li>
@@ -66,7 +66,7 @@
                                                 {{ $popularNews->title }}
                                             </a>
                                         </h4>
-                                        <p>{!! str_limit($popularNews->preview, 100) !!} </p>
+                                        <p style="font-weight: lighter;">{!! str_limit($popularNews->preview, 100) !!} </p>
                                     </div>
                                 </div>
                             </li>
@@ -74,6 +74,9 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        <div class="single_bottom_rightbar wow fadeInDown">
+            <img width="100%" src="{{ $publicUrl }}images/740x300.jpg" alt="">
         </div>
         <div class="single_bottom_rightbar">
             <h2>Blog Archive</h2>

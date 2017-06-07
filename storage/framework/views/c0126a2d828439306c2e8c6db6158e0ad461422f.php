@@ -17,7 +17,7 @@
 
                                     </a>
                                 </h4>
-                                <p><?php echo str_limit($recentNews->preview, 100); ?> </p>
+                                <p style="font-weight: lighter;"><?php echo str_limit($recentNews->preview, 100); ?> </p>
                             </div>
                         </div>
                     </li>
@@ -46,7 +46,7 @@
 
                                             </a>
                                         </h4>
-                                        <p><?php echo str_limit($popularNews->preview, 100); ?> </p>
+                                        <p style="font-weight: lighter;"><?php echo str_limit($popularNews->preview, 100); ?> </p>
                                     </div>
                                 </div>
                             </li>
@@ -69,7 +69,7 @@
 
                                             </a>
                                         </h4>
-                                        <p><?php echo str_limit($popularNews->preview, 100); ?> </p>
+                                        <p style="font-weight: lighter;"><?php echo str_limit($popularNews->preview, 100); ?> </p>
                                     </div>
                                 </div>
                             </li>
@@ -77,6 +77,9 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        <div class="single_bottom_rightbar wow fadeInDown">
+            <img width="100%" src="<?php echo e($publicUrl); ?>images/740x300.jpg" alt="">
         </div>
         <div class="single_bottom_rightbar">
             <h2>Blog Archive</h2>
