@@ -144,5 +144,12 @@ class News extends Model
         DB::table('news')
             ->insertGetId($data);
     }
+    public function deleteAllTagsOfNews($id)
+    {
+        return DB::table('news_tags')
+            ->join('tags', 'tags.id', '=', 'news_tags.tag_id')
+            ->where('news_id', '=', $id)
+            ->delete();
+    }
 
 }

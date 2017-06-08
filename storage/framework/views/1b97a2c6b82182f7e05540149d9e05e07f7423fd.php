@@ -51,7 +51,7 @@
                                     <td class="actions">
                                         <?php if(Auth::user()->role == 1 OR Auth::user()->id == $newsItem->created_by): ?>
                                             <a href="<?php echo e(route('news.edit', ['id' => $newsItem->id])); ?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||
-                                            <a href="<?php echo e(route('news.delete', ['id' => $newsItem->id])); ?>" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                            <a href="<?php echo e(route('news.delete', ['id' => $newsItem->id])); ?>" onclick="return confirm('Bạn có muốn xóa tin tức này không?')" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                                         <?php else: ?>
                                             <a href="<?php echo e(route('news.edit', ['id' => $newsItem->id])); ?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
                                         <?php endif; ?>

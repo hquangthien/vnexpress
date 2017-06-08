@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\NewsEditRequest;
 use App\Http\Requests\NewsRequest;
 use App\Model\Cat;
 use App\Model\News;
@@ -55,7 +56,7 @@ class NewsController extends Controller
             $objNews->created_by = Auth::user()->id;
 
             $objNews->save();
-            $lastIdNews = $objNews->id;
+            $id = $objNews->id;
             // Insert Tags
             $tagsModel = new Tag();
             $newsTagsModel = new News_Tag();
@@ -67,10 +68,10 @@ class NewsController extends Controller
                     $objTags = $tagsModel->checkTag(trim($tagItem));
                     if (sizeof($objTags) == 0) {
                         $lastId = $tagsModel->insertGetId(trim($tagItem));
-                        $tmp = ['news_id' => $lastIdNews, 'tag_id' => $lastId];
+                        $tmp = ['news_id' => $id, 'tag_id' => $lastId];
                         array_push($dataNewsTags, $tmp);
                     } else {
-                        $tmp = ['news_id' => $lastIdNews, 'tag_id' => $objTags[0]->id];
+                        $tmp = ['news_id' => $id, 'tag_id' => $objTags[0]->id];
                         array_push($dataNewsTags, $tmp);
                     }
                 }
@@ -82,20 +83,61 @@ class NewsController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit($id)
     {
+        $objNews = $this->newsModel->find($id);
 
-        return view('admin.news.edit');
+        $objTags = $this->newsModel->getTagsOfNews($id);
+        return view('admin.news.edit', ['objNews' => $objNews, 'objTags' => $objTags]);
     }
 
-    public function update(Request $request, $id)
+    public function update(NewsEditRequest $request, $id)
     {
-        //
+        try {
+            //Update News
+            $objNews = $this->newsModel->find($id);
+            if ($request->hasFile('picture'))
+            {
+                Storage::delete('files/'.$objNews->picture);
+                $picture = $request->file('picture')->store('/files');
+                $picture = last(explode('/', $picture));
+                $objNews->picture = $picture;
+            }
+
+            $objNews->cat_id = $request->cat_id;
+            $objNews->title = $request->title;
+            $objNews->preview = $request->preview;
+            $objNews->detail = $request->detail;
+            $objNews->updated_by = Auth::user()->id;
+
+            $objNews->save();
+
+            $this->newsModel->deleteAllTagsOfNews($id);
+
+            // Insert Tags
+            $tagsModel = new Tag();
+            $newsTagsModel = new News_Tag();
+
+            $dataNewsTags = [];
+            if ($request->tags != '') {
+                $arTags = explode(',', $request->tags);
+                foreach ($arTags as $tagItem) {
+                    $objTags = $tagsModel->checkTag(trim($tagItem));
+                    if (sizeof($objTags) == 0) {
+                        $lastId = $tagsModel->insertGetId(trim($tagItem));
+                        $tmp = ['news_id' => $id, 'tag_id' => $lastId];
+                        array_push($dataNewsTags, $tmp);
+                    } else {
+                        $tmp = ['news_id' => $id, 'tag_id' => $objTags[0]->id];
+                        array_push($dataNewsTags, $tmp);
+                    }
+                }
+            }
+            $newsTagsModel->insertTags($dataNewsTags);
+            return redirect()->route('news.index')->with('msg', 'Cập nhật thành công');
+        } catch (\Exception $exception){
+            return redirect()->route('news.index')->with('msg', 'Có lỗi xảy ra khi cập nhật tin tức');
+        }
     }
 
     public function destroy($id)

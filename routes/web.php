@@ -40,7 +40,7 @@ Route::group(['namespace' => 'Auth'], function (){
 
 /*** END Route Login Logout ***/
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth' ], function (){
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'cat'] ], function (){
 
     Route::resource('user', 'UserController');
 
