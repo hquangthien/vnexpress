@@ -6,41 +6,86 @@
                 <div class="col-sm-12">
                     <div class="card-box">
 
-                        <h4 class="header-title m-t-0 m-b-30">Input Types</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Cập nhật tin tức</h4>
 
                         <div class="row">
                             <div class="col-lg-12">
-                                <form class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label">Text</label>
-                                        <div class="col-md-10">
-                                            <input type="text" class="form-control" value="Some text value...">
-                                        </div>
+                                <?php if(count($errors) > 0): ?>
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li><?php echo e($error); ?></li>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </ul>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label" for="example-email">Email</label>
-                                        <div class="col-md-10">
-                                            <input type="email" id="example-email" name="example-email" class="form-control" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label">Password</label>
-                                        <div class="col-md-10">
-                                            <input type="password" class="form-control" value="password">
-                                        </div>
-                                    </div>
+                                <?php endif; ?>
+                                <form id="create_news" class="form-horizontal" action="<?php echo e(route('news.update', ['id' => $objNews->id])); ?>" method="POST" enctype="multipart/form-data" role="form">
+                                    <?php echo e(csrf_field()); ?>
 
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Placeholder</label>
+                                        <label class="col-md-2 control-label">Tiêu đề tin (*)</label>
                                         <div class="col-md-10">
-                                            <input type="text" class="form-control" placeholder="placeholder">
+                                            <input type="text" class="form-control" name="title" value="<?php echo e($objNews->title); ?>" placeholder="Nhập tiêu đề tin...">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-2 control-label">Text area</label>
+                                        <label class="col-md-2 control-label">Danh mục cha (*)</label>
                                         <div class="col-md-10">
-                                            <textarea class="form-control" id="editor" rows="5"></textarea>
+                                            <select name="cat_id" id="cat_id" class="form-control">
+                                                <?php $__currentLoopData = $objSuperCat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $superCat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php if($superCat->id == $objNews->cat_id): ?>
+                                                        <option selected value="<?php echo e($superCat->id); ?>"><?php echo e($superCat->name); ?></option>
+                                                    <?php else: ?>
+                                                        <option value="<?php echo e($superCat->id); ?>"><?php echo e($superCat->name); ?></option>
+                                                    <?php endif; ?>
+
+                                                    <?php if(isset($objSubCat[$superCat->id])): ?>
+                                                        <?php $__currentLoopData = $objSubCat[$superCat->id]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php if($subCat->id == $objNews->cat_id): ?>
+                                                                <option selected value="<?php echo e($subCat->id); ?>">|--- <?php echo e($subCat->name); ?></option>
+                                                            <?php else: ?>
+                                                                <option value="<?php echo e($subCat->id); ?>">|--- <?php echo e($subCat->name); ?></option>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php endif; ?>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                            </select>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="example-email">Mô tả tin (*)</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="preview" class="form-control" value="<?php echo e($objNews->preview); ?>" placeholder="Nhập mô tả tin...">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="example-email">Từ khóa</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="tags" value="<?php $__currentLoopData = $objTags; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tagItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php echo e($tagItem->content); ?>,<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>" data-role="tagsinput" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="example-email">Ảnh cũ</label>
+                                        <div class="col-md-3">
+                                            <img width="100%" src="<?php echo e(Storage::url('app/files/')); ?><?php echo e($objNews->picture); ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="example-email">Ảnh bìa</label>
+                                        <div class="col-md-10">
+                                            <input type="file" name="picture" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Chi tiết tin</label>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" name="detail" id="editor" rows="5"><?php echo $objNews->detail; ?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <input type="submit" name="submit" value="Cập nhật" class="btn btn-lg btn-primary">
+                                        <input type="reset" name="reset" value="Nhập lại" class="btn btn-lg btn-default">
                                     </div>
                                 </form>
                             </div><!-- end col -->
@@ -54,10 +99,26 @@
 
     </div> <!-- content -->
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
+    <link rel="stylesheet" href="<?php echo e($adminUrl); ?>assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="<?php echo e($adminUrl); ?>assets/css/bootstrap-tagsinput.css">
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
+    <script src="<?php echo e($adminUrl); ?>assets/js/bootstrap-tagsinput.min.js"></script>
     <script src="/public/plugins/ckeditor/ckeditor.js" language="javascript" type="text/javascript"></script>
     <script src="/public/plugins/ckfinder/ckfinder.js" language="javascript" type="text/javascript"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#create_news').on('keyup keypress', function(e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+
+
         CKEDITOR.replace('editor', {
             filebrowserBrowseUrl : '/public/plugins/ckfinder/ckfinder.html',
             filebrowserImageBrowseUrl : '/public/plugins/ckfinder/ckfinder.html?type=Images',

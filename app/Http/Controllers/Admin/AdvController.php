@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdvController extends Controller
 {
-
-    /**
-     * @var Adv
-     */
     private $advModel;
 
     public function __construct(Adv $advModel)
@@ -39,10 +35,12 @@ class AdvController extends Controller
         $objAdv->link = $request->link;
         $objAdv->position = $request->position;
 
-        $picture = $request->file('image')->store('/files');
-        $picture = last(explode('/', $picture));
+        if ($request->hasFile('image')){
+            $picture = $request->file('image')->store('/files');
+            $picture = last(explode('/', $picture));
+            $objAdv->image = $picture;
+        }
 
-        $objAdv->image = $picture;
         if ($objAdv->save()){
             return redirect()->route('adv.index')->with('msg', 'Thêm thành công');
         } else{
