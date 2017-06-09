@@ -460,7 +460,7 @@ span.meta_more:before{content:" "; font-family:FontAwesome; font-style:normal
 
 .comment-box .comment-name.by-author, .comment-box .comment-name.by-author a {color: #03658c;}
 .comment-box .comment-name.by-author:after {
-    content: 'autor';
+    content: 'thành viên';
     background: #03658c;
     color: #FFF;
     font-size: 12px;

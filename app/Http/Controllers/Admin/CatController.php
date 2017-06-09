@@ -8,10 +8,6 @@ use App\Http\Controllers\Controller;
 
 class CatController extends Controller
 {
-
-    /**
-     * @var Cat
-     */
     private $catModel;
 
     public function __construct(Cat $catModel)

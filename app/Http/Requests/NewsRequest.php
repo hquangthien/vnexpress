@@ -22,7 +22,7 @@ class NewsRequest extends FormRequest
             'title' => 'required',
             'preview' => 'required|max:190',
             'detail' => 'required',
-            'cat_id' => 'required',
+            'cat_parrent' => 'required',
             'picture' => 'required|file'
         ];
     }
@@ -34,7 +34,7 @@ class NewsRequest extends FormRequest
             'preview.required' => 'Nhập mô tả tin',
             'preview.max' => 'Mô tả quá dài',
             'detail.required' => 'Nhập chi tiết tin',
-            'cat_id.required' => 'Chọn danh mục tin',
+            'cat_parrent.required' => 'Chọn danh mục tin cha',
             'picture.required' => 'Chọn ảnh bìa cho tin',
             'picture.file' => 'Chọn ảnh bìa cho tin'
         ];

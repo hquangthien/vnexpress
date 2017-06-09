@@ -14,3 +14,18 @@ function updateActive(url, id, callBackOnSuccess, callBackOnError) {
         }
     });
 }
+
+function statistic(url, callBackOnSuccess, callBackOnError) {
+    $.ajax({
+        url: DOMAIN + url,
+        type: 'GET',
+        async: true,
+        dataType: 'JSON',
+        success: function (data) {
+            callBackOnSuccess(data);
+        },
+        error: function (error) {
+            callBackOnError(error);
+        }
+    });
+}

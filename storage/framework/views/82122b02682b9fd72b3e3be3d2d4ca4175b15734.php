@@ -51,6 +51,10 @@
             <?php if(session('msg')): ?>
                 <p class="alert alert-danger"><?php echo e(session('msg')); ?></p>
             <?php endif; ?>
+            <?php if(session('block_user')): ?>
+                <p class="alert alert-danger"><?php echo e(session('block_user')); ?></p>
+                <?php Session::forget('block_user') ?>
+            <?php endif; ?>
             <form class="form-horizontal m-t-20" action="<?php echo e(route('login')); ?>" method="POST">
                 <?php echo e(csrf_field()); ?>
 

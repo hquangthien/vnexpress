@@ -51,7 +51,7 @@
                                     </td>
                                     <td class="actions">
                                         <a href="<?php echo e(route('adv.edit', ['id' => $advItem->id])); ?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||
-                                        <a href="<?php echo e(route('adv.delete', ['id' => $advItem->id])); ?>" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                        <a href="<?php echo e(route('adv.delete', ['id' => $advItem->id])); ?>" onclick="return confirm('Bạn có muốn xóa quảng cáo này không?')" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Model\Adv;
 use App\Model\Cat;
 use App\Model\News;
+use App\Model\News_Tag;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -18,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $cat = new Cat();
         $news = new News();
+        $adv = new Adv();
+        $tags = new News_Tag();
         /*** nav-bar ***/
         $objSuperCat = $cat->getSuperCat();
         $objSubCat = [];
@@ -37,11 +41,22 @@ class AppServiceProvider extends ServiceProvider
         //dd($objPopularNews);
         /*** end recent-news, recent-news-commented ***/
 
+        /*** get top adv ***/
+        $advTop = $adv->getTopAdv();
+        $advRightBar = $adv->getRightBarAdv();
+        /*** end get top adv ***/
+
+        $hotTags = $tags->hotTags();
+
+
         View::share('objRecentNews', $objRecentNews);
         View::share('objRecentNewsComment', $objRecentNewsComment);
         View::share('objPopularNews', $objPopularNews);
         View::share('objSuperCat', $objSuperCat);
         View::share('objSubCat', $objSubCat);
+        View::share('advTop', $advTop);
+        View::share('advRightBar', $advRightBar);
+        View::share('hotTags', $hotTags);
         View::share('publicUrl', getenv('PUBLIC_URL'));
         View::share('adminUrl', getenv('ADMIN_URL'));
     }

@@ -51,6 +51,10 @@
             @if(session('msg'))
                 <p class="alert alert-danger">{{ session('msg') }}</p>
             @endif
+            @if(session('block_user'))
+                <p class="alert alert-danger">{{ session('block_user') }}</p>
+                <?php Session::forget('block_user') ?>
+            @endif
             <form class="form-horizontal m-t-20" action="{{ route('login') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="form-group ">

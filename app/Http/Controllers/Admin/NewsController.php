@@ -9,7 +9,6 @@ use App\Model\News;
 use App\Http\Controllers\Controller;
 use App\Model\News_Tag;
 use App\Model\Tag;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,7 +35,7 @@ class NewsController extends Controller
         return view('admin.news.create');
     }
 
-    public function store(Request $request)
+    public function store(NewsRequest $request)
     {
         try {
             if ($request->cat_id == '') {
@@ -149,6 +148,23 @@ class NewsController extends Controller
         } else{
             return redirect()->route('news.index')->with('msg', 'Xóa thất bại');
         }
+    }
+
+    public function updateActive($id)
+    {
+        $objNews = $this->newsModel->find($id);
+        if ($objNews->pin == 0){
+            $objNews->pin = 1;
+            $active = 1;
+        } else{
+            $objNews->pin = 0;
+            $active = 0;
+        }
+        $objNews->save();
+        return response()->json([
+            'message'=>'Update thành công !',
+            'active' => $active
+        ]);
     }
 
     public function getSubCat($id)

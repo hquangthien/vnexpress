@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\VnExpress;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
+use App\Model\Contact;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 
@@ -18,18 +19,23 @@ class ContactController extends Controller
         return view('vnexpress.contact.contact');
     }
 
-    public function postContact(Request $request)
+    public function postContact(ContactRequest $request)
     {
         $data = [
             'name' => $request->name,
-            'email' => $request->email,
+            'mail' => $request->mail,
             'subject' => $request->subject,
-            'detail' => $request->detail,
+            'content' => $request->detail,
         ];
+
+        $objContact = new Contact();
+        $objContact->create($data);
+
         $subject = $request->subject;
         Mail::send('vnexpress.contact.blank', $data, function ($msg) use ($request){
-            $msg->from($request->email, $request->name);
-            $msg->to('hquangthien1@gmail.com', 'Hoàng Quang Thiên')->subject($request->subject);
+            $msg->from($request->mail, $request->name);
+            $msg->to('hquangthien.it@gmail.com', 'Hoàng Quang Thiên')->subject($request->subject);
         });
+        return redirect()->route('vnexpress.page.contact')->with('msg', 'Gửi thành công');
     }
 }

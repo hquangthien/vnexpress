@@ -35,18 +35,32 @@
                             <li><a href="<?php echo e(route('vnexpress.page.home')); ?>">Trang chủ</a></li>
                             <li><a href="<?php echo e(route('vnexpress.page.about')); ?>">Giới thiệu</a></li>
                             <li><a href="<?php echo e(route('vnexpress.page.contact')); ?>">Liên hệ</a></li>
+                            <?php if(!Auth::check()): ?>
+                                <li><a href="<?php echo e(route('login')); ?>">Đăng nhập</a></li>
+                                <li><a href="<?php echo e(route('register')); ?>">Đăng ký</a></li>
+                            <?php else: ?>
+                                <li><a href="<?php echo e(route('profile', ['id' => Auth::user()->id])); ?>"><span class="fa fa-user"></span> <?php echo e(Auth::user()->fullname); ?></a></li> >
+                                <li><a href="<?php echo e(route('logout')); ?>">Đăng xuất</a></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                     <div class="header_top_right">
-                        <form action="#" class="search_form">
-                            <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
+                        <form action="<?php echo e(route('search')); ?>" method="POST" class="search_form">
+                            <?php echo e(csrf_field()); ?>
+
+                            <input type="text" <?php if(isset($key)): ?> value="<?php echo e($key); ?>"<?php endif; ?> name="key" placeholder="Nhập từ khóa tìm kiếm...">
                             <input type="submit" value="">
                         </form>
                     </div>
                 </div>
                 <div class="header_bottom">
                     <div class="header_bottom_left"><a class="logo" href="<?php echo e(route('vnexpress.page.home')); ?>">VN<strong>Express</strong> <span>Thế giới trong tầm tay</span></a></div>
-                    <div class="header_bottom_right"><a href="#"><img src="<?php echo e($publicUrl); ?>images/addbanner_728x90_V1.jpg" alt=""></a></div>
+                    <?php if(sizeof($advTop) > 0): ?>
+                        <div class="header_bottom_right"><a href="<?php echo e($advTop[0]->link); ?>"><img width="100%" src="<?php echo e(Storage::url('app/files/')); ?><?php echo e($advTop[0]->image); ?>" alt=""></a></div>
+                    <?php else: ?>
+                        <div class="header_bottom_right"><a href="<?php echo e(route('vnexpress.page.contact')); ?>"><img src="<?php echo e($publicUrl); ?>images/default_topadv.jpg" alt=""></a></div>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </div>

@@ -39,11 +39,6 @@ class UserController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit($id)
     {
         $objUser = $this->user->find($id);
@@ -66,7 +61,11 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-
+        if ($this->user->destroy($id)){
+            return redirect()->route('user.index')->with('msg', 'Xóa tài khoản thành công');
+        } else{
+            return redirect()->route('user.index')->with('msg', 'Xóa tài khoản thất bại');
+        }
     }
 
     public function updateActive($id)

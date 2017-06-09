@@ -16,7 +16,7 @@ class News extends Model
     {
         return DB::table('news')
             ->where('pin', '=', '1')
-            ->orderBy('id', 'DESC')
+            ->orderBy('updated_at', 'DESC')
             ->select('news.*')
             ->take(10)
             ->get();
@@ -144,12 +144,31 @@ class News extends Model
         DB::table('news')
             ->insertGetId($data);
     }
+
     public function deleteAllTagsOfNews($id)
     {
         return DB::table('news_tags')
             ->join('tags', 'tags.id', '=', 'news_tags.tag_id')
             ->where('news_id', '=', $id)
             ->delete();
+    }
+
+    public function searchByTitle($key)
+    {
+        return DB::table('news')
+            ->whereRaw('title LIKE "%'.$key.'%"')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    }
+
+    public function getNewsOfTag($tag_id)
+    {
+        return DB::table('news')
+            ->join('news_tags', 'news.id', '=', 'news_tags.news_id')
+            ->where('news_tags.tag_id', '=', $tag_id)
+            ->orderBy('created_at', 'DESC')
+            ->selectRaw('news.*')
+            ->paginate(10);
     }
 
 }
