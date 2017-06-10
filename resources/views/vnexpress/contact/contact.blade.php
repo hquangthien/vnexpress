@@ -1,4 +1,7 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    Trang liên hệ VN EXPRESS
+@endsection
 @section('content')
     <div class="col-md-8">
         <div class="contact_area">

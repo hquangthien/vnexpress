@@ -9,6 +9,7 @@ use App\Model\News;
 use App\Http\Controllers\Controller;
 use App\Model\News_Tag;
 use App\Model\Tag;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -172,5 +173,11 @@ class NewsController extends Controller
         $catModel = new Cat();
         $objSubCat =$catModel->getSubCat($id)->toJson();
         return response()->json($objSubCat);
+    }
+
+    public function search(Request $request)
+    {
+        $objNews = $this->newsModel->getAllNewsSearching($request->key);
+        return view('admin.news.index', ['objNews' => $objNews, 'keySearch' => $request->key]);
     }
 }

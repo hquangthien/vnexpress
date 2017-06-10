@@ -21,6 +21,7 @@ class News_Tag extends Model
         return DB::table('news_tags')
             ->join('tags', 'news_tags.tag_id', '=', 'tags.id')
             ->selectRaw('count(tag_id) as tags_number, tags.content, tag_id')
+            ->orderBy('tags_number', 'DESC')
             ->groupBy('tags.content')
             ->groupBy('news_tags.tag_id')
             ->take(10)

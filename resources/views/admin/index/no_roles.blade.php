@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Authorization
+@endsection
+@section('h1')
+    Authorization
+@endsection
 @section('content')
     <div class="content">
         <div class="container">

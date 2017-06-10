@@ -93,7 +93,7 @@ class NewsController extends Controller
     public function search(Request $request)
     {
         $objNews = $this->newsModel->searchByTitle($request->key);
-        return view('vnexpress.news.search', ['objNews' => $objNews, 'key' => $request->key]);
+        return view('vnexpress.news.search', ['objNews' => $objNews, 'keySearch' => $request->key]);
     }
 
     public function tags($slug, $id)

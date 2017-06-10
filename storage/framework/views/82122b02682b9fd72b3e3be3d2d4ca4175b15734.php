@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="<?php echo e($adminUrl); ?>assets/images/favicon.ico">
 
     <!-- App title -->
-    <title>Adminto - Responsive Admin Dashboard Template</title>
+    <title>Trang đăng nhập</title>
 
     <!-- App CSS -->
     <link href="<?php echo e($adminUrl); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -31,8 +31,7 @@
 <div class="clearfix"></div>
 <div class="wrapper-page">
     <div class="text-center">
-        <a href="index.html" class="logo"><span>VN EXPRESS<span>admin</span></span></a>
-        <h5 class="text-muted m-t-0 font-600">Trang quản lý</h5>
+        <a href="index.html" class="logo"><span>VN EXPRESS<span></span></span></a>
     </div>
     <div class="m-t-40 card-box">
         <div class="text-center">
@@ -49,7 +48,7 @@
                 </div>
             <?php endif; ?>
             <?php if(session('msg')): ?>
-                <p class="alert alert-danger"><?php echo e(session('msg')); ?></p>
+                <p class="alert alert-success"><?php echo e(session('msg')); ?></p>
             <?php endif; ?>
             <?php if(session('block_user')): ?>
                 <p class="alert alert-danger"><?php echo e(session('block_user')); ?></p>

@@ -1,3 +1,6 @@
+<?php $__env->startSection('title'); ?>
+    Trang chủ VnExpress || Tin tức cập nhật 24/24 || Tin bóng đá
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('slider'); ?>
     <?php
         $modelNews = new \App\Model\News();

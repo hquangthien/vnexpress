@@ -1,3 +1,9 @@
+<?php $__env->startSection('title'); ?>
+    Trang thống kê
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('h1'); ?>
+    Trang thống kê
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="content">
         <div class="container">

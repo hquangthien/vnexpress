@@ -56,6 +56,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('vnexpress.page.home');
+        return redirect()->route('login');
     }
 }

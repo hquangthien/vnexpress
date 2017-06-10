@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Quản lý bình luận
+@endsection
+@section('h1')
+    Quản lý bình luận
+@endsection
 @section('content')
     <div class="content">
         <div class="container">

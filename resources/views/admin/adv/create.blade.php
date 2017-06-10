@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Tạo mới quảng cáo
+@endsection
+@section('h1')
+    Tạo mới quảng cáo
+@endsection
 @section('content')
     <div class="content">
         <div class="container">

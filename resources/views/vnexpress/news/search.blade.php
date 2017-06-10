@@ -1,4 +1,7 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    Kết quả tìm kiếm "{{ $keySearch }}"
+@endsection
 @section('content')
     <?php
     $modelNews = new \App\Model\News();
@@ -17,7 +20,7 @@
                         <p class="alert alert-danger"> Không có kết quả nào cho từ khóa mà bạn tìm kiếm </p>
                     @else
                         <h2> <span class="bold_line"><span></span></span> <span class="solid_line"></span> <span class="title_text">
-                                Có {{ sizeof($objNews) }} kết quả tìm kiếm cho từ khóa "{{ $key }}"
+                                Có {{ sizeof($objNews) }} kết quả tìm kiếm cho từ khóa "{{ $keySearch }}"
                             </span></h2>
                         @foreach($objNews as $newsItem)
                             <?php

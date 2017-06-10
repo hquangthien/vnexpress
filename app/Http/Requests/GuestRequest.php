@@ -43,7 +43,7 @@ class GuestRequest extends FormRequest
             'email.required' => 'Vui lòng nhập email',
             'email.unique' => 'Email này đã được sử dụng',
             'email.email' => 'Vui lòng nhập chính xác định dạng email',
-            'confirm-email' => 'Email không trùng khớp',
+            'confirm-email.same' => 'Email không trùng khớp',
             'fullname.required' => 'Vui lòng nhập họ tên',
             'password.required' => 'Vui lòng nhập password',
             'password.min' => 'Mật khẩu không được ít hơn 6 ký tự',

@@ -1,4 +1,9 @@
 @extends('templates.vnexpress.master')
+
+@section('title')
+    Từ khóa {{ $objTags->content }}
+@endsection
+
 @section('content')
     <?php
     $modelNews = new \App\Model\News();

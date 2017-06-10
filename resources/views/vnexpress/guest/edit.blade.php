@@ -1,4 +1,6 @@
-
+@section('title')
+    Trang thông tin cá nhân
+@endsection
 @include('templates.vnexpress.header')
 <section id="mainContent">
     @yield('slider')

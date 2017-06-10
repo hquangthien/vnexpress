@@ -1,4 +1,7 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    Trang chủ VnExpress || Tin tức cập nhật 24/24 || Tin bóng đá
+@endsection
 @section('slider')
     <?php
         $modelNews = new \App\Model\News();

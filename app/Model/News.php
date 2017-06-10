@@ -157,6 +157,7 @@ class News extends Model
     {
         return DB::table('news')
             ->whereRaw('title LIKE "%'.$key.'%"')
+            ->orWhereRaw('preview LIKE "%'.$key.'%"')
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
     }
@@ -171,4 +172,14 @@ class News extends Model
             ->paginate(10);
     }
 
+    public function getAllNewsSearching($key)
+    {
+        return DB::table('news')
+            ->join('categories', 'categories.id', '=', 'news.cat_id')
+            ->join('users', 'users.id', '=', 'news.created_by')
+            ->whereRaw('title like "%'.$key.'%"')
+            ->orderBy('id', 'DESC')
+            ->selectRaw('news.*, categories.name as cat_name, users.username')
+            ->paginate(10);
+    }
 }

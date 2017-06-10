@@ -1,3 +1,6 @@
+<?php $__env->startSection('title'); ?>
+    Trang liên hệ VN EXPRESS
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="col-md-8">
         <div class="contact_area">

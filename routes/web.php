@@ -49,14 +49,19 @@ Route::group(['namespace' => 'Auth'], function (){
 
 
 /*** Route Register ***/
-Route::get('dang-ky', 'Admin\GuestController@create')->name('register');
-Route::post('dang-ky', 'Admin\GuestController@store')->name('register');
+Route::group(['middleware' => 'web'], function () {
+    Route::get('dang-ky', 'Admin\GuestController@create')->name('register');
+    Route::post('dang-ky', 'Auth\RegisterController@getSendCode')->name('register');
+
+    Route::get('xac-nhan', 'Auth\RegisterController@getSendCode')->name('register.confirm');
+    Route::post('xac-nhan', 'Auth\RegisterController@storeUser')->name('register.store');
+});
+/*** End Route Register ***/
+
 Route::group(['prefix' => 'thanh-vien', 'middleware' => 'profile'], function (){
     Route::get('thong-tin-ca-nhan/{id}', 'Admin\GuestController@edit')->name('profile');
     Route::post('thong-tin-ca-nhan/{id}', 'Admin\GuestController@update')->name('profile');
 });
-
-/*** End Route Register ***/
 
 
 /*** START Route Comment ***/
@@ -109,6 +114,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::post('{id}/update', 'NewsController@update')->name('news.update');
         Route::get('{id}', 'NewsController@destroy')->name('news.delete');
     });
+
+    Route::post('search', 'NewsController@search')->name('news.search');
 
     Route::group(['prefix' => 'guest'], function (){
         Route::get('active_user/{id}', 'GuestController@updateActive');

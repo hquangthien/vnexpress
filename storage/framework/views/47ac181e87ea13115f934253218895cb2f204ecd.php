@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +10,7 @@
     <link rel="shortcut icon" href="<?php echo e($adminUrl); ?>assets/images/favicon.ico">
 
     <!-- App title -->
-    <title>Adminto - Responsive Admin Dashboard Template</title>
+    <title>Trang đăng ký</title>
 
     <!-- App CSS -->
     <link href="<?php echo e($adminUrl); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -32,7 +31,6 @@
 <div class="wrapper-page">
     <div class="text-center">
         <a href="index.html" class="logo"><span>VN EXPRESS</span></a>
-        <h5 class="text-muted m-t-0 font-600">Trang quản lý</h5>
     </div>
     <div class="m-t-40 card-box">
         <div class="text-center">
@@ -68,7 +66,7 @@
 
                 <div class="form-group ">
                     <div class="col-xs-12">
-                        <input class="form-control" name="confirm-email" type="text" placeholder="Nhập lại email...">
+                        <input class="form-control" name="confirm_email" type="text" placeholder="Nhập lại email...">
                     </div>
                 </div>
 
@@ -80,7 +78,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <input class="form-control" name="confirm-password" type="password" placeholder="Nhập lại mật khẩu...">
+                        <input class="form-control" name="confirm_password" type="password" placeholder="Nhập lại mật khẩu...">
                     </div>
                 </div>
 

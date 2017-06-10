@@ -1,4 +1,7 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    Giới thiệu trang tin tức VN EXPRESS
+@endsection
 @section('content')
     <div class="col-lg-8 col-md-8">
         <div class="content_bottom_left">

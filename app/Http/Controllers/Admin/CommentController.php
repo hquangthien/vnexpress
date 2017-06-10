@@ -24,7 +24,6 @@ class CommentController extends Controller
 
     public function store(CommentRequest $request)
     {
-        /*dd($request);*/
         if ($this->commentModel->create($request->toArray()))
         {
             return redirect()->back();

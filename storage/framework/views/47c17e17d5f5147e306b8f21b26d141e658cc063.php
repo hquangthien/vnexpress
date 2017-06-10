@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VN Express</title>
+    <title><?php echo $__env->yieldContent('title'); ?></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="<?php echo e($publicUrl); ?>images/favicon.ico">
@@ -48,7 +48,7 @@
                         <form action="<?php echo e(route('search')); ?>" method="POST" class="search_form">
                             <?php echo e(csrf_field()); ?>
 
-                            <input type="text" <?php if(isset($key)): ?> value="<?php echo e($key); ?>"<?php endif; ?> name="key" placeholder="Nhập từ khóa tìm kiếm...">
+                            <input type="text" <?php if(isset($keySearch)): ?> value="<?php echo e($keySearch); ?>"<?php endif; ?> name="key" placeholder="Nhập từ khóa tìm kiếm...">
                             <input type="submit" value="">
                         </form>
                     </div>

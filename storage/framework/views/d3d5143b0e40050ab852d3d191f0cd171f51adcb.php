@@ -1,3 +1,6 @@
+<?php $__env->startSection('title'); ?>
+    Giới thiệu trang tin tức VN EXPRESS
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="col-lg-8 col-md-8">
         <div class="content_bottom_left">

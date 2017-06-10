@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VN Express</title>
+    <title>@yield('title')</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="{{ $publicUrl }}images/favicon.ico">
@@ -47,7 +47,7 @@
                     <div class="header_top_right">
                         <form action="{{ route('search') }}" method="POST" class="search_form">
                             {{ csrf_field() }}
-                            <input type="text" @if(isset($key)) value="{{ $key }}"@endif name="key" placeholder="Nhập từ khóa tìm kiếm...">
+                            <input type="text" @if(isset($keySearch)) value="{{ $keySearch }}"@endif name="key" placeholder="Nhập từ khóa tìm kiếm...">
                             <input type="submit" value="">
                         </form>
                     </div>

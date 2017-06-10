@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Quản lý quảng cáo
+@endsection
+@section('h1')
+    Quản lý quảng cáo
+@endsection
 @section('content')
     <div class="content">
         <div class="container">
@@ -6,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-30">Danh sách người dùng</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Danh sách quảng cáo</h4>
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif

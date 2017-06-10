@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="{{ $adminUrl }}assets/images/favicon.ico">
 
     <!-- App title -->
-    <title>Adminto - Responsive Admin Dashboard Template</title>
+    <title>@yield('title')</title>
 
     <!-- App CSS -->
     <link href="{{ $adminUrl }}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -53,15 +53,16 @@
                         </button>
                     </li>
                     <li>
-                        <h4 class="page-title">Basic Tables</h4>
+                        <h4 class="page-title">@yield('h1')</h4>
                     </li>
                 </ul>
 
                 <!-- Right(Notification and Searchbox -->
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden-xs">
-                        <form role="search" class="app-search">
-                            <input type="text" placeholder="Search..."
+                        <form action="{{ route('news.search') }}" method="POST" role="search" class="app-search">
+                            {{ csrf_field() }}
+                            <input name="key" type="text" placeholder="Search..." value="@if(isset($keySearch)) {{$keySearch}} @endif"
                                    class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>

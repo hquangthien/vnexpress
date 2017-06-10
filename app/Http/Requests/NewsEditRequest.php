@@ -20,7 +20,6 @@ class NewsEditRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'preview' => 'required|max:190',
             'detail' => 'required',
             'cat_id' => 'required',
         ];
@@ -31,7 +30,6 @@ class NewsEditRequest extends FormRequest
         return [
             'title.required' => 'Nhập tiêu đề tin',
             'preview.required' => 'Nhập mô tả tin',
-            'preview.max' => 'Mô tả quá dài',
             'detail.required' => 'Nhập chi tiết tin',
             'cat_id.required' => 'Chọn danh mục tin'
         ];

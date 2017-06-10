@@ -1,3 +1,6 @@
+<?php $__env->startSection('title'); ?>
+    Kết quả tìm kiếm "<?php echo e($keySearch); ?>"
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <?php
     $modelNews = new \App\Model\News();
@@ -16,7 +19,7 @@
                         <p class="alert alert-danger"> Không có kết quả nào cho từ khóa mà bạn tìm kiếm </p>
                     <?php else: ?>
                         <h2> <span class="bold_line"><span></span></span> <span class="solid_line"></span> <span class="title_text">
-                                Có <?php echo e(sizeof($objNews)); ?> kết quả tìm kiếm cho từ khóa "<?php echo e($key); ?>"
+                                Có <?php echo e(sizeof($objNews)); ?> kết quả tìm kiếm cho từ khóa "<?php echo e($keySearch); ?>"
                             </span></h2>
                         <?php $__currentLoopData = $objNews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $newsItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php

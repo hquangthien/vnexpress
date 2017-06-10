@@ -1,3 +1,9 @@
+<?php $__env->startSection('title'); ?>
+    Trang quản lý tin tức
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('h1'); ?>
+    Trang quản lý tin tức
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="content">
         <div class="container">

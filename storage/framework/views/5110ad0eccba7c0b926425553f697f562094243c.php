@@ -1,3 +1,7 @@
+<?php $__env->startSection('title'); ?>
+    <?php echo e($objNews->title); ?>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="col-lg-8 col-md-8">
         <div class="content_bottom_left">
@@ -206,7 +210,7 @@
 <?php $__env->startSection('js'); ?>
     <script type="text/javascript">
         function getCmtId($id) {
-            $('#name_cmt').val($id);
+            $('#comment_id').val($id);
         }
     </script>
 <?php $__env->stopSection(); ?>

@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Trang thống kê
+@endsection
+@section('h1')
+    Trang thống kê
+@endsection
 @section('content')
     <div class="content">
         <div class="container">

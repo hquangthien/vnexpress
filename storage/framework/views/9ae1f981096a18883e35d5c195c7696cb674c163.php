@@ -1,3 +1,9 @@
+<?php $__env->startSection('title'); ?>
+    Quản lý quảng cáo
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('h1'); ?>
+    Quản lý quảng cáo
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="content">
         <div class="container">
@@ -5,7 +11,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-30">Danh sách người dùng</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Danh sách quảng cáo</h4>
                         <?php if(session('msg')): ?>
                             <p class="alert alert-success"> <?php echo e(session('msg')); ?> </p>
                         <?php endif; ?>
