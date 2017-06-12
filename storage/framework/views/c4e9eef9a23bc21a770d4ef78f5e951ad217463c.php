@@ -1,7 +1,15 @@
+<?php $__env->startSection('title'); ?>
+    Trang quản lý nhân viên
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('h1'); ?>
+    Trang quản lý nhân viên
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="content">
         <div class="container">
-
+            <?php
+                $userModel = new \App\User();
+            ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-box">
@@ -50,7 +58,10 @@
                                     <td class="actions">
                                         <?php if(Auth::user()->role == 1 OR Auth::user()->id == $userItem->id): ?>
                                         <a href="<?php echo e(route('user.edit', ['id' => $userItem->id])); ?>" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||
-                                        <a href="<?php echo e(route('user.destroy', ['id' => $userItem->id])); ?>" onclick="return confirm('Bạn có muốn xóa người dùng này không')" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                        <?php
+                                            $countNewsOfUser = $userModel->countNewsOfUser($userItem->id)[0]->count_news;
+                                        ?>
+                                        <a href="<?php echo e(route('user.destroy', ['id' => $userItem->id])); ?>" onclick="return confirm('Có <?php echo e($countNewsOfUser); ?> bài đăng người dùng này đã đăng tải \nBạn có chắc chắn xóa người dùng này?')" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                                         <?php else: ?>
                                             No action
                                         <?php endif; ?>

@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Trang quản lý tin tức
+@endsection
+@section('h1')
+    Trang quản lý tin tức
+@endsection
 @section('content')
     <div class="content">
         <div class="container">
@@ -42,9 +48,9 @@
                                     <td>
                                         <a href="javascript:void(0)" onclick="changeActive({{ $newsItem->id }})">
                                             @if($newsItem->pin == 1)
-                                                <img id="user{{ $newsItem->id }}" src="{{ $adminUrl }}assets/images/1.gif">
+                                                <img id="news{{ $newsItem->id }}" src="{{ $adminUrl }}assets/images/1.gif">
                                             @else
-                                                <img id="user{{ $newsItem->id }}" src="{{ $adminUrl }}assets/images/0.gif">
+                                                <img id="news{{ $newsItem->id }}" src="{{ $adminUrl }}assets/images/0.gif">
                                             @endif
                                         </a>
                                     </td>
@@ -78,7 +84,7 @@
 @section('js')
     <script type="text/javascript">
         function changeActive(id) {
-            updateActive('news/active_adv', id,
+            updateActive('news/active_news', id,
                 function (data) {
                     $('#news'+id).attr('src', '{{ $adminUrl }}assets/images/'+ data.active +'.gif');
                 },

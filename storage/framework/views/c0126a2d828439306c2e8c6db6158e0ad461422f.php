@@ -79,28 +79,12 @@
             </div>
         </div>
         <div class="single_bottom_rightbar wow fadeInDown">
-            <img width="100%" src="<?php echo e($publicUrl); ?>images/740x300.jpg" alt="">
-        </div>
-        <div class="single_bottom_rightbar">
-            <h2>Blog Archive</h2>
-            <div class="blog_archive wow fadeInDown">
-                <form action="#">
-                    <select>
-                        <option value="">Blog Archive</option>
-                        <option value="">October(20)</option>
-                    </select>
-                </form>
-            </div>
-        </div>
-        <div class="single_bottom_rightbar wow fadeInDown">
-            <h2>Popular Lnks</h2>
-            <ul>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Blog Home</a></li>
-                <li><a href="#">Error Page</a></li>
-                <li><a href="#">Social link</a></li>
-                <li><a href="#">Login</a></li>
-            </ul>
+            <?php if(sizeof($advRightBar) > 0): ?>
+                <img width="100%" src="<?php echo e(Storage::url('app/files/')); ?><?php echo e($advRightBar[0]->image); ?>" alt="">
+            <?php else: ?>
+                <img width="100%" src="<?php echo e($publicUrl); ?>images/default_advright.jpg" alt="">
+            <?php endif; ?>
+
         </div>
     </div>
 </div>

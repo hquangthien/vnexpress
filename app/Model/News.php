@@ -16,7 +16,7 @@ class News extends Model
     {
         return DB::table('news')
             ->where('pin', '=', '1')
-            ->orderBy('id', 'DESC')
+            ->orderBy('updated_at', 'DESC')
             ->select('news.*')
             ->take(10)
             ->get();
@@ -144,6 +144,7 @@ class News extends Model
         DB::table('news')
             ->insertGetId($data);
     }
+
     public function deleteAllTagsOfNews($id)
     {
         return DB::table('news_tags')
@@ -152,4 +153,33 @@ class News extends Model
             ->delete();
     }
 
+    public function searchByTitle($key)
+    {
+        return DB::table('news')
+            ->whereRaw('title LIKE "%'.$key.'%"')
+            ->orWhereRaw('preview LIKE "%'.$key.'%"')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    }
+
+    public function getNewsOfTag($tag_id)
+    {
+        return DB::table('news')
+            ->join('news_tags', 'news.id', '=', 'news_tags.news_id')
+            ->where('news_tags.tag_id', '=', $tag_id)
+            ->orderBy('created_at', 'DESC')
+            ->selectRaw('news.*')
+            ->paginate(10);
+    }
+
+    public function getAllNewsSearching($key)
+    {
+        return DB::table('news')
+            ->join('categories', 'categories.id', '=', 'news.cat_id')
+            ->join('users', 'users.id', '=', 'news.created_by')
+            ->whereRaw('title like "%'.$key.'%"')
+            ->orderBy('id', 'DESC')
+            ->selectRaw('news.*, categories.name as cat_name, users.username')
+            ->paginate(10);
+    }
 }

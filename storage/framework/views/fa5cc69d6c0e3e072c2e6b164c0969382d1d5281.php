@@ -1,3 +1,12 @@
+<?php $__env->startSection('title'); ?>
+    <?php if(isset($subCat)): ?>
+        <?php echo e($subCat->name); ?>
+
+    <?php else: ?>
+        <?php echo e($superCat->name); ?>
+
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <?php
     $modelNews = new \App\Model\News();

@@ -1,3 +1,7 @@
+<?php $__env->startSection('title'); ?>
+    <?php echo e($objNews->title); ?>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="col-lg-8 col-md-8">
         <div class="content_bottom_left">
@@ -38,9 +42,9 @@
         </div>
         <div class="row">
             <div class="share_post col-md-6 col-md-offset-6">
-                <a class="facebook" href="#"><i class="fa fa-facebook"></i>Facebook</a>
-                <a class="twitter" href="#"><i class="fa fa-twitter"></i>Twitter</a>
-                <a class="googleplus" href="#"><i class="fa fa-google-plus"></i>Google+</a>
+                <a class="facebook" onclick="alert('Comming soon!!!')" href="javascript:void(0)"><i class="fa fa-facebook"></i>Facebook</a>
+                <a class="twitter" onclick="alert('Comming soon!!!')" href="javascript:void(0)"><i class="fa fa-twitter"></i>Twitter</a>
+                <a class="googleplus" onclick="alert('Comming soon!!!')" href="javascript:void(0)"><i class="fa fa-google-plus"></i>Google+</a>
             </div>
         </div>
         <hr/>
@@ -76,23 +80,54 @@
                 <div class="comments-container">
                     <h3>Bình luận cho bài đăng: </h3>
                     <div class="row" style="padding: 30px; box-sizing: border-box; background-color: #f0f0f0">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Họ tên</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" placeholder="Nhập họ tên...">
-                                </div>
+                        <?php if(session(('msg'))): ?>
+                            <?php echo e(session('msg')); ?>
+
+                        <?php endif; ?>
+                        <?php if(count($errors) > 0): ?>
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li><?php echo e($error); ?></li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </ul>
                             </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="email" placeholder="Nhập email...">
+                        <?php endif; ?>
+                        <form class="form-horizontal" action="<?php echo e(route('comment')); ?>" method="POST">
+                            <?php echo e(csrf_field()); ?>
+
+                            <?php if(Auth::check()): ?>
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <input type="hidden" class="form-control" name="name_cmt" value="<?php echo e(Auth::user()->fullname); ?>" placeholder="Nhập họ tên...">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <input type="hidden" class="form-control" value="<?php echo e(Auth::user()->email); ?>" name="email" placeholder="Nhập email...">
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" name="user_id" value="<?php echo e(Auth::user()->id); ?>">
+                            <?php else: ?>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Họ tên</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name_cmt" name="name_cmt" placeholder="Nhập họ tên...">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" name="email" placeholder="Nhập email...">
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <input type="hidden" class="form-control" name="news_id" value="<?php echo e($objNews->id); ?>">
+                            <input type="hidden" class="form-control" id="comment_id" name="comment_id" value="<?php echo e(null); ?>">
                             <div class="form-group">
                                 <label for="inputPassword3" class="col-sm-2 control-label">Bình luận</label>
                                 <div class="col-sm-10">
-                                    <textarea type="password" rows="5" class="form-control" id="content" placeholder="Nhập nội dung bình luận"></textarea>
+                                    <textarea type="password" rows="5" id="content" class="form-control" name="content" placeholder="Nhập nội dung bình luận"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -117,9 +152,13 @@
                                         <!-- Contenedor del Comentario -->
                                         <div class="comment-box">
                                             <div class="comment-head">
-                                                <h6 class="comment-name"><a href="javascript:void(0)"><?php echo e($commentItem->name_cmt); ?></a></h6>
+                                                <?php if($commentItem->user_id != ''): ?>
+                                                    <h6 class="comment-name by-author"><a href="javascript:void(0)"><?php echo e($commentItem->name_cmt); ?></a></h6>
+                                                <?php else: ?>
+                                                    <h6 class="comment-name"><a href="javascript:void(0)"><?php echo e($commentItem->name_cmt); ?></a></h6>
+                                                <?php endif; ?>
                                                 <span><?php echo e($commentItem->created_at); ?></span>
-                                                <i class="fa fa-reply"></i>
+                                                    <a href="#content" onclick="getCmtId(<?php echo e($commentItem->id); ?>)"><i class="fa fa-reply"></i></a>
                                             </div>
                                             <div class="comment-content">
                                                 <?php echo e($commentItem->content); ?>
@@ -142,7 +181,11 @@
                                                     <!-- Contenedor del Comentario -->
                                                     <div class="comment-box">
                                                         <div class="comment-head">
-                                                            <h6 class="comment-name"><a href="javascript:void(0)"><?php echo e($subCommentItem->name_cmt); ?></a></h6>
+                                                            <?php if($subCommentItem->user_id != ''): ?>
+                                                                <h6 class="comment-name by-author"><a href="javascript:void(0)"><?php echo e($subCommentItem->name_cmt); ?></a></h6>
+                                                            <?php else: ?>
+                                                                <h6 class="comment-name"><a href="javascript:void(0)"><?php echo e($subCommentItem->name_cmt); ?></a></h6>
+                                                            <?php endif; ?>
                                                             <span><?php echo e($subCommentItem->created_at); ?></span>
                                                         </div>
                                                         <div class="comment-content">
@@ -163,5 +206,12 @@
             </div>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
+    <script type="text/javascript">
+        function getCmtId($id) {
+            $('#comment_id').val($id);
+        }
+    </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('templates.vnexpress.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

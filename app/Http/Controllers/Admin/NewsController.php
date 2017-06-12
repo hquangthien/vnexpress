@@ -36,7 +36,7 @@ class NewsController extends Controller
         return view('admin.news.create');
     }
 
-    public function store(Request $request)
+    public function store(NewsRequest $request)
     {
         try {
             if ($request->cat_id == '') {
@@ -151,10 +151,33 @@ class NewsController extends Controller
         }
     }
 
+    public function updateActive($id)
+    {
+        $objNews = $this->newsModel->find($id);
+        if ($objNews->pin == 0){
+            $objNews->pin = 1;
+            $active = 1;
+        } else{
+            $objNews->pin = 0;
+            $active = 0;
+        }
+        $objNews->save();
+        return response()->json([
+            'message'=>'Update thành công !',
+            'active' => $active
+        ]);
+    }
+
     public function getSubCat($id)
     {
         $catModel = new Cat();
         $objSubCat =$catModel->getSubCat($id)->toJson();
         return response()->json($objSubCat);
+    }
+
+    public function search(Request $request)
+    {
+        $objNews = $this->newsModel->getAllNewsSearching($request->key);
+        return view('admin.news.index', ['objNews' => $objNews, 'keySearch' => $request->key]);
     }
 }

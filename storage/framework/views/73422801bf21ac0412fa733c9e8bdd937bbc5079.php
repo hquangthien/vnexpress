@@ -1,3 +1,9 @@
+<?php $__env->startSection('title'); ?>
+    Quản lý danh mục tin
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('h1'); ?>
+    Quản lý danh mục tin
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <?php
         $catModel = new \App\Model\Cat();

@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="<?php echo e($adminUrl); ?>assets/images/favicon.ico">
 
     <!-- App title -->
-    <title>Adminto - Responsive Admin Dashboard Template</title>
+    <title><?php echo $__env->yieldContent('title'); ?></title>
 
     <!-- App CSS -->
     <link href="<?php echo e($adminUrl); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -53,32 +53,17 @@
                         </button>
                     </li>
                     <li>
-                        <h4 class="page-title">Basic Tables</h4>
+                        <h4 class="page-title"><?php echo $__env->yieldContent('h1'); ?></h4>
                     </li>
                 </ul>
 
                 <!-- Right(Notification and Searchbox -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <!-- Notification -->
-                        <div class="notification-box">
-                            <ul class="list-inline m-b-0">
-                                <li>
-                                    <a href="javascript:void(0);" class="right-bar-toggle">
-                                        <i class="zmdi zmdi-notifications-none"></i>
-                                    </a>
-                                    <div class="noti-dot">
-                                        <span class="dot"></span>
-                                        <span class="pulse"></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End Notification bar -->
-                    </li>
                     <li class="hidden-xs">
-                        <form role="search" class="app-search">
-                            <input type="text" placeholder="Search..."
+                        <form action="<?php echo e(route('news.search')); ?>" method="POST" role="search" class="app-search">
+                            <?php echo e(csrf_field()); ?>
+
+                            <input name="key" type="text" placeholder="Search..." value="<?php if(isset($keySearch)): ?> <?php echo e($keySearch); ?> <?php endif; ?>"
                                    class="form-control">
                             <a href=""><i class="fa fa-search"></i></a>
                         </form>

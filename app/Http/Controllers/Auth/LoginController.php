@@ -37,6 +37,11 @@ class LoginController extends Controller
     public function postLogin(Request $request)
     {
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])){
+            if (Auth::user()->active_user == 0)
+            {
+                $request->session()->put('block_user', 'Tài khoản này đã bị vô hiệu hóa, vui lòng liên hệ với admin để khôi phục tài khoản');
+                return redirect()->route('logout');
+            }
             if (Auth::user()->role == 3){
                 return redirect()->route('vnexpress.page.home');
             } else{

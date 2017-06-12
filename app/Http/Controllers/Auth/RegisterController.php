@@ -2,70 +2,53 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Requests\GuestRequest;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function getSendCode(GuestRequest $request)
     {
-        $this->middleware('guest');
+        $codeRand = rand(100000, 999999);
+        //create session
+        $tmp = [];
+        $tmp['content']['username'] = $request->username;
+        $tmp['content']['email'] = $request->email;
+        $tmp['content']['password'] = bcrypt(trim($request->password));
+        $tmp['content']['fullname'] = $request->fullname;
+        $tmp['code'] = $codeRand;
+        $tmp['ip'] = $request->ip();
+        $request->session()->flash('register_'.$request->username, $tmp);
+
+        Mail::send('admin.auth.blank', ['code' => $codeRand], function ($msg) use ($request){
+            $msg->from('hquangthien1@gmail.com', 'Admin VN Express');
+            $msg->to($request->email, 'Admin VN Express')->subject('Xác nhận email');
+        });
+
+        return view('admin.auth.confirm_email', ['username' => $request->username, 'email' => $request->email]);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function storeUser(Request $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        if(Session::has('register_'.$request->username)){
+           $arRegisterInfo =  Session::get('register_'.$request->username);
+           if ($request->ip() == $arRegisterInfo['ip'] && $request->confirm == $arRegisterInfo['code']){
+               if (User::create($arRegisterInfo['content']))
+               {
+                   return redirect()->route('login')->with('msg', 'Đăng ký thành công');
+               }
+           } else{
+               $request->session()->flash('register_'.$arRegisterInfo['content']['username'], $arRegisterInfo);
+               $request->session()->flash('msg', 'Mã xác nhận không hợp lệ');
+               return view('admin.auth.confirm_email', ['username' => $arRegisterInfo['content']['username'], 'email' => $arRegisterInfo['content']['email']]);
+
+           }
+        }
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-    }
+
 }

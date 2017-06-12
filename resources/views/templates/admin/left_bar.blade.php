@@ -25,23 +25,35 @@
                 <li class="text-muted menu-title">Bảng điều khiển</li>
 
                 <li>
-                    <a href="{{ route('index.index') }}" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> Thống kê </span> </a>
+                    <a href="{{ route('index.index') }}" class="waves-effect @if(Request::segment(2)== '') active @endif"><i class="zmdi zmdi-view-dashboard"></i> <span> Thống kê </span> </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('user.index') }}" class="waves-effect"><i class="fa fa-user-circle"></i> <span> Người dùng </span> </a>
+                    <a href="{{ route('user.index') }}" class="waves-effect @if(Request::segment(2)== 'user') active @endif"><i class="fa fa-user-circle"></i> <span> Ban quản trị </span> </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('guest.index') }}" class="waves-effect @if(Request::segment(2)== 'guest') active @endif"><i class="fa fa-user-o"></i> <span> Thành viên </span> </a>
                 </li>
 
                 <li class="has_sub">
-                    <a href="{{ route('cat.index') }}" class="waves-effect"><i class="zmdi zmdi-view-list"></i> <span> Danh mục tin </span> </a>
+                    <a href="{{ route('cat.index') }}" class="waves-effect @if(Request::segment(2)== 'cat') active @endif"><i class="zmdi zmdi-view-list"></i> <span> Danh mục tin </span> </a>
                 </li>
 
                 <li class="has_sub">
-                    <a href="{{ route('news.index') }}" class="waves-effect"><i class="zmdi zmdi-collection-item"></i><span> Tin tức </span> </a>
+                    <a href="{{ route('news.index') }}" class="waves-effect @if(Request::segment(2)== 'news') active @endif"><i class="zmdi zmdi-collection-item"></i><span> Tin tức </span> </a>
                 </li>
 
                 <li class="has_sub">
-                    <a href="{{ route('adv.index') }}" class="waves-effect"><i class="zmdi zmdi-layers"></i><span>Quảng cáo </span></a>
+                    <a href="{{ route('adv.index') }}" class="waves-effect @if(Request::segment(2)== 'adv') active @endif"><i class="zmdi zmdi-layers"></i><span>Quảng cáo </span></a>
+                </li>
+
+                <li class="has_sub">
+                    <a href="{{ route('comment.index') }}" class="waves-effect @if(Request::segment(2)== 'comment') active @endif"><i class="fa fa-comment"></i><span>Bình luận </span></a>
+                </li>
+
+                <li class="has_sub">
+                    <a href="{{ route('contact.index') }}" class="waves-effect @if(Request::segment(2)== 'contact') active @endif"><i class="fa fa-envelope"></i><span>Liên hệ </span></a>
                 </li>
 
             </ul>

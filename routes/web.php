@@ -12,37 +12,67 @@
 */
 Route::pattern('id', '[0-9]*');
 Route::pattern('slug', '(.)*');
+
+/*** Route Public ***/
 Route::group(['namespace' => 'VnExpress' ], function (){
     Route::get('/', 'IndexController@home')->name('vnexpress.page.home');
     Route::get('home', 'IndexController@home')->name('vnexpress.page.home');
+    Route::get('trang-chu', 'IndexController@home')->name('vnexpress.page.home');
     Route::get('{slug}-{id}', 'NewsController@category')->name('vnexpress.page.category');
     Route::get('{slug}-{id}.html', 'NewsController@detail')->name('vnexpress.page.detail');
     Route::get('gioi-thieu', 'ContactController@about')->name('vnexpress.page.about');
+    Route::get('{slug}-{id}/tags', 'NewsController@tags')->name('vnexpress.page.tag');
 
+    Route::post('tim-kiem', 'NewsController@search')->name('search');
 
     Route::group(['prefix' => 'lien-he'], function (){
         Route::get('/', 'ContactController@getContact')->name('vnexpress.page.contact');
         Route::post('/', 'ContactController@postContact')->name('vnexpress.page.contact');
-        Route::get('tag/{slug}-{id}', 'NewsController@tag')->name('vnexpress.page.tag');
     });
 
-
-    Route::get('khong-tim-thay/{status}', 'ErrorController@error')->name('vnexpress.page.error');
+    Route::get('loi-bat-ngo/{status}', 'ErrorController@error')->name('vnexpress.page.error');
 });
+/*** End Route public ***/
+
+
 
 /*** Route Login Logout ***/
 
 Route::group(['namespace' => 'Auth'], function (){
-    Route::get('login', 'LoginController@getLogin')->name('login');
-    Route::post('login', 'LoginController@postLogin')->name('login');
-    Route::get('logout', 'LoginController@logout')->name('logout');
+    Route::get('dang-nhap', 'LoginController@getLogin')->name('login');
+    Route::post('dang-nhap', 'LoginController@postLogin')->name('login');
+    Route::get('dang-xuat', 'LoginController@logout')->name('logout');
 });
 
 /*** END Route Login Logout ***/
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'cat'] ], function (){
 
-    Route::resource('user', 'UserController');
+
+/*** Route Register ***/
+Route::group(['middleware' => 'web'], function () {
+    Route::get('dang-ky', 'Admin\GuestController@create')->name('register');
+    Route::post('dang-ky', 'Auth\RegisterController@getSendCode')->name('register');
+
+    Route::get('xac-nhan', 'Auth\RegisterController@getSendCode')->name('register.confirm');
+    Route::post('xac-nhan', 'Auth\RegisterController@storeUser')->name('register.store');
+});
+/*** End Route Register ***/
+
+Route::group(['prefix' => 'thanh-vien', 'middleware' => 'profile'], function (){
+    Route::get('thong-tin-ca-nhan/{id}', 'Admin\GuestController@edit')->name('profile');
+    Route::post('thong-tin-ca-nhan/{id}', 'Admin\GuestController@update')->name('profile');
+});
+
+
+/*** START Route Comment ***/
+Route::group(['prefix' => 'binh-luan'], function (){
+    Route::post('/', 'Admin\CommentController@store')->name('comment');
+});
+/*** END Route Comment ***/
+
+
+/*** START route group ADMIN ***/
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'roles']], function (){
 
     Route::group(['prefix' => 'user'], function (){
         Route::get('active_user/{id}', 'UserController@updateActive');
@@ -51,7 +81,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::post('store', 'UserController@store')->name('user.store');
         Route::get('{id}/edit', 'UserController@edit')->name('user.edit');
         Route::post('{id}/update', 'UserController@update')->name('user.update');
-        Route::get('{id}', 'UserController@destroy')->name('user.delete');
+        Route::get('{id}', 'UserController@destroy')->name('user.destroy');
     });
 
     Route::group(['prefix' => 'cat'], function (){
@@ -85,6 +115,29 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         Route::get('{id}', 'NewsController@destroy')->name('news.delete');
     });
 
+    Route::post('search', 'NewsController@search')->name('news.search');
+
+    Route::group(['prefix' => 'guest'], function (){
+        Route::get('active_user/{id}', 'GuestController@updateActive');
+        Route::get('/', 'GuestController@index')->name('guest.index');
+        Route::get('{id}', 'GuestController@destroy')->name('guest.destroy');
+    });
+
+    Route::group(['prefix' => 'comment'], function (){
+        Route::get('active_cmt/{id}', 'CommentController@updateActive');
+        Route::get('/', 'CommentController@index')->name('comment.index');
+        Route::get('{id}', 'CommentController@destroy')->name('comment.destroy');
+    });
+
+    Route::group(['prefix' => 'contact'], function (){
+        Route::get('/', 'ContactController@index')->name('contact.index');
+        Route::get('{id}/edit', 'ContactController@show')->name('contact.show');
+        Route::post('reply', 'ContactController@postContact')->name('contact.reply');
+        Route::get('{id}', 'ContactController@delete')->name('contact.delete');
+    });
+
     Route::get('/', 'StatisticController@index')->name('index.index');
+    Route::get('/no-roles', 'StatisticController@returnError')->name('index.error');
 
 });
+/*** END ROUTE GROUP ADMIN ***/

@@ -25,23 +25,35 @@
                 <li class="text-muted menu-title">Bảng điều khiển</li>
 
                 <li>
-                    <a href="<?php echo e(route('index.index')); ?>" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> Thống kê </span> </a>
+                    <a href="<?php echo e(route('index.index')); ?>" class="waves-effect <?php if(Request::segment(2)== ''): ?> active <?php endif; ?>"><i class="zmdi zmdi-view-dashboard"></i> <span> Thống kê </span> </a>
                 </li>
 
                 <li>
-                    <a href="<?php echo e(route('user.index')); ?>" class="waves-effect"><i class="fa fa-user-circle"></i> <span> Người dùng </span> </a>
+                    <a href="<?php echo e(route('user.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'user'): ?> active <?php endif; ?>"><i class="fa fa-user-circle"></i> <span> Ban quản trị </span> </a>
+                </li>
+
+                <li>
+                    <a href="<?php echo e(route('guest.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'guest'): ?> active <?php endif; ?>"><i class="fa fa-user-o"></i> <span> Thành viên </span> </a>
                 </li>
 
                 <li class="has_sub">
-                    <a href="<?php echo e(route('cat.index')); ?>" class="waves-effect"><i class="zmdi zmdi-view-list"></i> <span> Danh mục tin </span> </a>
+                    <a href="<?php echo e(route('cat.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'cat'): ?> active <?php endif; ?>"><i class="zmdi zmdi-view-list"></i> <span> Danh mục tin </span> </a>
                 </li>
 
                 <li class="has_sub">
-                    <a href="<?php echo e(route('news.index')); ?>" class="waves-effect"><i class="zmdi zmdi-collection-item"></i><span> Tin tức </span> </a>
+                    <a href="<?php echo e(route('news.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'news'): ?> active <?php endif; ?>"><i class="zmdi zmdi-collection-item"></i><span> Tin tức </span> </a>
                 </li>
 
                 <li class="has_sub">
-                    <a href="<?php echo e(route('adv.index')); ?>" class="waves-effect"><i class="zmdi zmdi-layers"></i><span>Quảng cáo </span></a>
+                    <a href="<?php echo e(route('adv.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'adv'): ?> active <?php endif; ?>"><i class="zmdi zmdi-layers"></i><span>Quảng cáo </span></a>
+                </li>
+
+                <li class="has_sub">
+                    <a href="<?php echo e(route('comment.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'comment'): ?> active <?php endif; ?>"><i class="fa fa-comment"></i><span>Bình luận </span></a>
+                </li>
+
+                <li class="has_sub">
+                    <a href="<?php echo e(route('contact.index')); ?>" class="waves-effect <?php if(Request::segment(2)== 'contact'): ?> active <?php endif; ?>"><i class="fa fa-envelope"></i><span>Liên hệ </span></a>
                 </li>
 
             </ul>

@@ -1,3 +1,9 @@
+<?php $__env->startSection('title'); ?>
+    Trang quản lý tin tức
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('h1'); ?>
+    Trang quản lý tin tức
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <div class="content">
         <div class="container">
@@ -41,9 +47,9 @@
                                     <td>
                                         <a href="javascript:void(0)" onclick="changeActive(<?php echo e($newsItem->id); ?>)">
                                             <?php if($newsItem->pin == 1): ?>
-                                                <img id="user<?php echo e($newsItem->id); ?>" src="<?php echo e($adminUrl); ?>assets/images/1.gif">
+                                                <img id="news<?php echo e($newsItem->id); ?>" src="<?php echo e($adminUrl); ?>assets/images/1.gif">
                                             <?php else: ?>
-                                                <img id="user<?php echo e($newsItem->id); ?>" src="<?php echo e($adminUrl); ?>assets/images/0.gif">
+                                                <img id="news<?php echo e($newsItem->id); ?>" src="<?php echo e($adminUrl); ?>assets/images/0.gif">
                                             <?php endif; ?>
                                         </a>
                                     </td>
@@ -78,7 +84,7 @@
 <?php $__env->startSection('js'); ?>
     <script type="text/javascript">
         function changeActive(id) {
-            updateActive('news/active_adv', id,
+            updateActive('news/active_news', id,
                 function (data) {
                     $('#news'+id).attr('src', '<?php echo e($adminUrl); ?>assets/images/'+ data.active +'.gif');
                 },

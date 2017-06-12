@@ -1,4 +1,7 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    Trang chủ VnExpress || Tin tức cập nhật 24/24 || Tin bóng đá
+@endsection
 @section('slider')
     <?php
         $modelNews = new \App\Model\News();
@@ -15,7 +18,7 @@
                     <div class="slick_slider">
                         @for($i = 0; $i < sizeof($objPinNews) - 4; $i++)
                             <div class="single_iteam">
-                                <img src="{{ Storage::url('app/files/') }}{{ $objPinNews[$i]->picture }}"
+                                <img height="425px" src="{{ Storage::url('app/files/') }}{{ $objPinNews[$i]->picture }}"
                                      alt="{{ str_slug($objPinNews[$i]->title) }}">
                                 <h2>
                                     <a class="slider_tittle"
@@ -100,26 +103,31 @@
         <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="row" style="padding-left: 15px">
                 <h2 style="font-size: 15px">
-                    <a href="pages/single.html"><strong>{{ mb_strtoupper('Thế giới' ) }}</strong></a>
-                    <small>
-                        <a href="pages/single.html"><strong>{{ mb_strtoupper('Thế giới' ) }}</strong></a>
-                    </small>
+                    <a href="pages/single.html"><strong>{{ mb_strtoupper('có thể bạn thích' ) }}</strong></a>
                 </h2>
             </div>
             <div class="content_middle_middle">
                 <div class="slick_slider2">
-                    <div class="single_featured_slide"> <a href="pages/single.html"><img src="{{ $publicUrl }}images/567x330x1.jpg" alt=""></a>
-                        <h2><a href="pages/single.html">Praesent vitae quam vitae arcu posuer 1</a></h2>
-                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget, vulput...</p>
-                    </div>
-                    <div class="single_featured_slide"> <a href="pages/single.html"><img src="{{ $publicUrl }}images/567x330x2.jpg" alt=""></a>
-                        <h2><a href="#">Praesent vitae quam vitae arcu posuer 2</a></h2>
-                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget, vulput...</p>
-                    </div>
-                    <div class="single_featured_slide"> <a href="pages/single.html"><img src="{{ $publicUrl }}images/567x330x3.jpg" alt=""></a>
-                        <h2><a href="#">Praesent vitae quam vitae arcu posuer 3</a></h2>
-                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget, vulput...</p>
-                    </div>
+                    @if(sizeof($objFavouriteNewsOfUser) > 0)
+                        <?php
+                            $sliderNews2 = $objFavouriteNewsOfUser;
+                        ?>
+                    @else
+                        <?php
+                        $sliderNews2 = $objPopularNews;
+                        ?>
+                    @endif
+                    @foreach($sliderNews2 as $sliderNewsItem)
+                        <div class="single_featured_slide">
+                            <a href="{{ route('vnexpress.page.detail', ['slug' => str_slug($sliderNewsItem->title), 'id' => $sliderNewsItem->id]) }}">
+                                <img height="401px" src="{{ Storage::url('app/files/') }}{{ $sliderNewsItem->picture }}" alt="{{ str_slug($sliderNewsItem->title) }}">
+                            </a>
+                            <h2>
+                                <a href="{{ route('vnexpress.page.detail', ['slug' => str_slug($sliderNewsItem->title), 'id' => $sliderNewsItem->id]) }}">{{ $sliderNewsItem->title }}</a>
+                            </h2>
+                            <p>{{ str_limit($sliderNewsItem->preview, 100) }}...</p>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

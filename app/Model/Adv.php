@@ -16,4 +16,24 @@ class Adv extends Model
             ->where('position', '=', $position)
             ->update(['active_adv' => 0]);
     }
+
+    public function getTopAdv()
+    {
+        return DB::table('advertisements')
+            ->where('position', '=', '1')
+            ->where('active_adv', '=', '1')
+            ->orderBy('updated_at', 'DESC')
+            ->take(1)
+            ->get();
+    }
+
+    public function getRightBarAdv()
+    {
+        return DB::table('advertisements')
+            ->where('position', '=', '2')
+            ->where('active_adv', '=', '1')
+            ->orderBy('updated_at', 'DESC')
+            ->take(1)
+            ->get();
+    }
 }

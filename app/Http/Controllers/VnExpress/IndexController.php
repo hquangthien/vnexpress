@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\VnExpress;
 
 use App\Model\Cat;
+use App\Model\Cat_User;
 use App\Model\News;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -47,13 +49,25 @@ class IndexController extends Controller
 
         //get 10 news are pinned
         $objPinNews = $this->news->getPinNews();
-
+        $objFavouriteNewsOfUser = [];
         //get favourite news
+        if (Auth::check())
+        {
+            $objCatUser = new Cat_User();
+            $arFavouriteCat = $objCatUser->getRelationByIdUser(Auth::user()->id);
+            if (sizeof($arFavouriteCat) > 0)
+            {
+                $idFavouriteCat = $arFavouriteCat[0]->cat_id;
+                $objFavouriteNewsOfUser = $this->news->getNewsOfSuperCat($idFavouriteCat, 6);
+            }
+        }
+
 
         return view('vnexpress.index.home', [
                 'objPinNews' => $objPinNews,
                 'objNewsPopular' => $objNewsPopular,
                 'arNewsInRemainCat' => $arNewsInRemainCat,
+                'objFavouriteNewsOfUser' => $objFavouriteNewsOfUser
             ]
         );
     }

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VN Express</title>
+    <title>@yield('title')</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="{{ $publicUrl }}images/favicon.ico">
@@ -35,18 +35,31 @@
                             <li><a href="{{ route('vnexpress.page.home') }}">Trang chủ</a></li>
                             <li><a href="{{ route('vnexpress.page.about') }}">Giới thiệu</a></li>
                             <li><a href="{{ route('vnexpress.page.contact') }}">Liên hệ</a></li>
+                            @if(!Auth::check())
+                                <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                                <li><a href="{{ route('register') }}">Đăng ký</a></li>
+                            @else
+                                <li><a href="{{ route('profile', ['id' => Auth::user()->id]) }}"><span class="fa fa-user"></span> {{ Auth::user()->fullname }}</a></li> >
+                                <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                            @endif
                         </ul>
                     </div>
                     <div class="header_top_right">
-                        <form action="#" class="search_form">
-                            <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
+                        <form action="{{ route('search') }}" method="POST" class="search_form">
+                            {{ csrf_field() }}
+                            <input type="text" @if(isset($keySearch)) value="{{ $keySearch }}"@endif name="key" placeholder="Nhập từ khóa tìm kiếm...">
                             <input type="submit" value="">
                         </form>
                     </div>
                 </div>
                 <div class="header_bottom">
                     <div class="header_bottom_left"><a class="logo" href="{{ route('vnexpress.page.home') }}">VN<strong>Express</strong> <span>Thế giới trong tầm tay</span></a></div>
-                    <div class="header_bottom_right"><a href="#"><img src="{{ $publicUrl }}images/addbanner_728x90_V1.jpg" alt=""></a></div>
+                    @if(sizeof($advTop) > 0)
+                        <div class="header_bottom_right"><a href="{{ $advTop[0]->link }}"><img width="100%" src="{{ Storage::url('app/files/') }}{{ $advTop[0]->image }}" alt=""></a></div>
+                    @else
+                        <div class="header_bottom_right"><a href="{{ route('vnexpress.page.contact') }}"><img src="{{ $publicUrl }}images/default_topadv.jpg" alt=""></a></div>
+                    @endif
+
                 </div>
             </div>
         </div>

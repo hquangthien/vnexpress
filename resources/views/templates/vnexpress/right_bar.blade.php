@@ -76,28 +76,12 @@
             </div>
         </div>
         <div class="single_bottom_rightbar wow fadeInDown">
-            <img width="100%" src="{{ $publicUrl }}images/740x300.jpg" alt="">
-        </div>
-        <div class="single_bottom_rightbar">
-            <h2>Blog Archive</h2>
-            <div class="blog_archive wow fadeInDown">
-                <form action="#">
-                    <select>
-                        <option value="">Blog Archive</option>
-                        <option value="">October(20)</option>
-                    </select>
-                </form>
-            </div>
-        </div>
-        <div class="single_bottom_rightbar wow fadeInDown">
-            <h2>Popular Lnks</h2>
-            <ul>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Blog Home</a></li>
-                <li><a href="#">Error Page</a></li>
-                <li><a href="#">Social link</a></li>
-                <li><a href="#">Login</a></li>
-            </ul>
+            @if(sizeof($advRightBar) > 0)
+                <img width="100%" src="{{ Storage::url('app/files/') }}{{ $advRightBar[0]->image }}" alt="">
+            @else
+                <img width="100%" src="{{ $publicUrl }}images/default_advright.jpg" alt="">
+            @endif
+
         </div>
     </div>
 </div>

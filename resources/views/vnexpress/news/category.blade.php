@@ -1,4 +1,11 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    @if(isset($subCat))
+        {{$subCat->name}}
+    @else
+        {{ $superCat->name }}
+    @endif
+@endsection
 @section('content')
     <?php
     $modelNews = new \App\Model\News();

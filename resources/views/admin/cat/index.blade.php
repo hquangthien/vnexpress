@@ -1,4 +1,10 @@
 @extends('templates.admin.master')
+@section('title')
+    Quản lý danh mục tin
+@endsection
+@section('h1')
+    Quản lý danh mục tin
+@endsection
 @section('content')
     <?php
         $catModel = new \App\Model\Cat();

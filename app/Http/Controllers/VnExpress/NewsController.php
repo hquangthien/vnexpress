@@ -4,6 +4,7 @@ namespace App\Http\Controllers\VnExpress;
 
 use App\Model\Cat;
 use App\Model\News;
+use App\Model\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -87,5 +88,18 @@ class NewsController extends Controller
             'objComments' => $objComments,
             ]
         );
+    }
+
+    public function search(Request $request)
+    {
+        $objNews = $this->newsModel->searchByTitle($request->key);
+        return view('vnexpress.news.search', ['objNews' => $objNews, 'keySearch' => $request->key]);
+    }
+
+    public function tags($slug, $id)
+    {
+        $objTags = Tag::find($id);
+        $objNews = $this->newsModel->getNewsOfTag($id);
+        return view('vnexpress.news.tags', ['objNews' => $objNews, 'objTags' => $objTags]);
     }
 }

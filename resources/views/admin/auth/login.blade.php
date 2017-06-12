@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="{{ $adminUrl }}assets/images/favicon.ico">
 
     <!-- App title -->
-    <title>Adminto - Responsive Admin Dashboard Template</title>
+    <title>Trang đăng nhập</title>
 
     <!-- App CSS -->
     <link href="{{ $adminUrl }}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -31,8 +31,7 @@
 <div class="clearfix"></div>
 <div class="wrapper-page">
     <div class="text-center">
-        <a href="index.html" class="logo"><span>VN EXPRESS<span>admin</span></span></a>
-        <h5 class="text-muted m-t-0 font-600">Trang quản lý</h5>
+        <a href="index.html" class="logo"><span>VN EXPRESS<span></span></span></a>
     </div>
     <div class="m-t-40 card-box">
         <div class="text-center">
@@ -49,7 +48,11 @@
                 </div>
             @endif
             @if(session('msg'))
-                <p class="alert alert-danger">{{ session('msg') }}</p>
+                <p class="alert alert-success">{{ session('msg') }}</p>
+            @endif
+            @if(session('block_user'))
+                <p class="alert alert-danger">{{ session('block_user') }}</p>
+                <?php Session::forget('block_user') ?>
             @endif
             <form class="form-horizontal m-t-20" action="{{ route('login') }}" method="POST">
                 {{ csrf_field() }}

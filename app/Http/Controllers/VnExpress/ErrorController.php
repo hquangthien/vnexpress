@@ -16,6 +16,8 @@ class ErrorController extends Controller
             case '505':
                 return view('vnexpress.error.error505');
                 break;
+            case '401':
+                return view('vnexpress.error.error401');
         }
 
 

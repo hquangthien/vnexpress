@@ -1,4 +1,7 @@
 @extends('templates.vnexpress.master')
+@section('title')
+    {{ $objNews->title }}
+@endsection
 @section('content')
     <div class="col-lg-8 col-md-8">
         <div class="content_bottom_left">
@@ -36,9 +39,9 @@
         </div>
         <div class="row">
             <div class="share_post col-md-6 col-md-offset-6">
-                <a class="facebook" href="#"><i class="fa fa-facebook"></i>Facebook</a>
-                <a class="twitter" href="#"><i class="fa fa-twitter"></i>Twitter</a>
-                <a class="googleplus" href="#"><i class="fa fa-google-plus"></i>Google+</a>
+                <a class="facebook" onclick="alert('Comming soon!!!')" href="javascript:void(0)"><i class="fa fa-facebook"></i>Facebook</a>
+                <a class="twitter" onclick="alert('Comming soon!!!')" href="javascript:void(0)"><i class="fa fa-twitter"></i>Twitter</a>
+                <a class="googleplus" onclick="alert('Comming soon!!!')" href="javascript:void(0)"><i class="fa fa-google-plus"></i>Google+</a>
             </div>
         </div>
         <hr/>
@@ -73,23 +76,52 @@
                 <div class="comments-container">
                     <h3>Bình luận cho bài đăng: </h3>
                     <div class="row" style="padding: 30px; box-sizing: border-box; background-color: #f0f0f0">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Họ tên</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" placeholder="Nhập họ tên...">
-                                </div>
+                        @if(session(('msg')))
+                            {{ session('msg') }}
+                        @endif
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="email" placeholder="Nhập email...">
+                        @endif
+                        <form class="form-horizontal" action="{{ route('comment') }}" method="POST">
+                            {{ csrf_field() }}
+                            @if(Auth::check())
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <input type="hidden" class="form-control" name="name_cmt" value="{{ Auth::user()->fullname }}" placeholder="Nhập họ tên...">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <input type="hidden" class="form-control" value="{{ Auth::user()->email }}" name="email" placeholder="Nhập email...">
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" name="user_id" value="{{ Auth::user()->id }}">
+                            @else
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Họ tên</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name_cmt" name="name_cmt" placeholder="Nhập họ tên...">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" name="email" placeholder="Nhập email...">
+                                    </div>
+                                </div>
+                            @endif
+                            <input type="hidden" class="form-control" name="news_id" value="{{ $objNews->id }}">
+                            <input type="hidden" class="form-control" id="comment_id" name="comment_id" value="{{ null }}">
                             <div class="form-group">
                                 <label for="inputPassword3" class="col-sm-2 control-label">Bình luận</label>
                                 <div class="col-sm-10">
-                                    <textarea type="password" rows="5" class="form-control" id="content" placeholder="Nhập nội dung bình luận"></textarea>
+                                    <textarea type="password" rows="5" id="content" class="form-control" name="content" placeholder="Nhập nội dung bình luận"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -114,9 +146,13 @@
                                         <!-- Contenedor del Comentario -->
                                         <div class="comment-box">
                                             <div class="comment-head">
-                                                <h6 class="comment-name"><a href="javascript:void(0)">{{ $commentItem->name_cmt }}</a></h6>
+                                                @if($commentItem->user_id != '')
+                                                    <h6 class="comment-name by-author"><a href="javascript:void(0)">{{ $commentItem->name_cmt }}</a></h6>
+                                                @else
+                                                    <h6 class="comment-name"><a href="javascript:void(0)">{{ $commentItem->name_cmt }}</a></h6>
+                                                @endif
                                                 <span>{{ $commentItem->created_at }}</span>
-                                                <i class="fa fa-reply"></i>
+                                                    <a href="#content" onclick="getCmtId({{ $commentItem->id }})"><i class="fa fa-reply"></i></a>
                                             </div>
                                             <div class="comment-content">
                                                 {{ $commentItem->content }}
@@ -138,7 +174,11 @@
                                                     <!-- Contenedor del Comentario -->
                                                     <div class="comment-box">
                                                         <div class="comment-head">
-                                                            <h6 class="comment-name"><a href="javascript:void(0)">{{ $subCommentItem->name_cmt }}</a></h6>
+                                                            @if($subCommentItem->user_id != '')
+                                                                <h6 class="comment-name by-author"><a href="javascript:void(0)">{{ $subCommentItem->name_cmt }}</a></h6>
+                                                            @else
+                                                                <h6 class="comment-name"><a href="javascript:void(0)">{{ $subCommentItem->name_cmt }}</a></h6>
+                                                            @endif
                                                             <span>{{ $subCommentItem->created_at }}</span>
                                                         </div>
                                                         <div class="comment-content">
@@ -158,4 +198,11 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script type="text/javascript">
+        function getCmtId($id) {
+            $('#comment_id').val($id);
+        }
+    </script>
 @endsection

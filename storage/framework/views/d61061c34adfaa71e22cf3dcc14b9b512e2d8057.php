@@ -1,3 +1,6 @@
+<?php $__env->startSection('title'); ?>
+    Trang chủ VnExpress || Tin tức cập nhật 24/24 || Tin bóng đá
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('slider'); ?>
     <?php
         $modelNews = new \App\Model\News();
@@ -14,7 +17,7 @@
                     <div class="slick_slider">
                         <?php for($i = 0; $i < sizeof($objPinNews) - 4; $i++): ?>
                             <div class="single_iteam">
-                                <img src="<?php echo e(Storage::url('app/files/')); ?><?php echo e($objPinNews[$i]->picture); ?>"
+                                <img height="425px" src="<?php echo e(Storage::url('app/files/')); ?><?php echo e($objPinNews[$i]->picture); ?>"
                                      alt="<?php echo e(str_slug($objPinNews[$i]->title)); ?>">
                                 <h2>
                                     <a class="slider_tittle"
@@ -102,26 +105,31 @@
         <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="row" style="padding-left: 15px">
                 <h2 style="font-size: 15px">
-                    <a href="pages/single.html"><strong><?php echo e(mb_strtoupper('Thế giới' )); ?></strong></a>
-                    <small>
-                        <a href="pages/single.html"><strong><?php echo e(mb_strtoupper('Thế giới' )); ?></strong></a>
-                    </small>
+                    <a href="pages/single.html"><strong><?php echo e(mb_strtoupper('có thể bạn thích' )); ?></strong></a>
                 </h2>
             </div>
             <div class="content_middle_middle">
                 <div class="slick_slider2">
-                    <div class="single_featured_slide"> <a href="pages/single.html"><img src="<?php echo e($publicUrl); ?>images/567x330x1.jpg" alt=""></a>
-                        <h2><a href="pages/single.html">Praesent vitae quam vitae arcu posuer 1</a></h2>
-                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget, vulput...</p>
-                    </div>
-                    <div class="single_featured_slide"> <a href="pages/single.html"><img src="<?php echo e($publicUrl); ?>images/567x330x2.jpg" alt=""></a>
-                        <h2><a href="#">Praesent vitae quam vitae arcu posuer 2</a></h2>
-                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget, vulput...</p>
-                    </div>
-                    <div class="single_featured_slide"> <a href="pages/single.html"><img src="<?php echo e($publicUrl); ?>images/567x330x3.jpg" alt=""></a>
-                        <h2><a href="#">Praesent vitae quam vitae arcu posuer 3</a></h2>
-                        <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget, vulput...</p>
-                    </div>
+                    <?php if(sizeof($objFavouriteNewsOfUser) > 0): ?>
+                        <?php
+                            $sliderNews2 = $objFavouriteNewsOfUser;
+                        ?>
+                    <?php else: ?>
+                        <?php
+                        $sliderNews2 = $objPopularNews;
+                        ?>
+                    <?php endif; ?>
+                    <?php $__currentLoopData = $sliderNews2; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sliderNewsItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="single_featured_slide">
+                            <a href="<?php echo e(route('vnexpress.page.detail', ['slug' => str_slug($sliderNewsItem->title), 'id' => $sliderNewsItem->id])); ?>">
+                                <img height="401px" src="<?php echo e(Storage::url('app/files/')); ?><?php echo e($sliderNewsItem->picture); ?>" alt="<?php echo e(str_slug($sliderNewsItem->title)); ?>">
+                            </a>
+                            <h2>
+                                <a href="<?php echo e(route('vnexpress.page.detail', ['slug' => str_slug($sliderNewsItem->title), 'id' => $sliderNewsItem->id])); ?>"><?php echo e($sliderNewsItem->title); ?></a>
+                            </h2>
+                            <p><?php echo e(str_limit($sliderNewsItem->preview, 100)); ?>...</p>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>
